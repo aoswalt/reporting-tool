@@ -111,5 +111,19 @@ namespace VarsityReportingTool {
                 e.Handled = true;
             }
         }
+
+        private void btnCopyAll_Click(object sender, EventArgs e) {
+            DataGridViewSelectedCellCollection selectedCells = dataGrid.SelectedCells;
+            dataGrid.SelectAll();
+            Clipboard.SetDataObject(dataGrid.GetClipboardContent(), true);
+            dataGrid.ClearSelection();
+
+            dataGrid.CurrentCell.Selected = true;
+        }
+
+        private void btnCopySelection_Click(object sender, EventArgs e) {
+            DataGridViewSelectedCellCollection selectedCells = dataGrid.SelectedCells;
+            Clipboard.SetDataObject(dataGrid.GetClipboardContent(), true);
+        }
     }
 }

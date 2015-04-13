@@ -488,6 +488,7 @@
             this.btnCopySelection.TabIndex = 29;
             this.btnCopySelection.Text = "Copy Selection";
             this.btnCopySelection.UseVisualStyleBackColor = true;
+            this.btnCopySelection.Click += new System.EventHandler(this.btnCopySelection_Click);
             // 
             // btnOpenInExcel
             // 
@@ -517,6 +518,7 @@
             this.dataGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.dataGrid.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableAlwaysIncludeHeaderText;
             this.dataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dataGrid.Location = new System.Drawing.Point(4, 3);
             this.dataGrid.Name = "dataGrid";
