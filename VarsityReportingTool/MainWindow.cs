@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Excel = Microsoft.Office.Interop.Excel;
 
 namespace VarsityReportingTool {
     public partial class MainWindow : Form {
@@ -104,6 +105,11 @@ namespace VarsityReportingTool {
             btnRunQuery.Enabled = true;
         }
 
+
+        // ====================
+        // Data Grid
+        // ====================
+
         // allow ctrl-A to select all
         private void txtQuery_KeyDown(object sender, KeyEventArgs e) {
             if(e.Control && e.KeyCode == Keys.A) {
@@ -113,7 +119,6 @@ namespace VarsityReportingTool {
         }
 
         private void btnCopyAll_Click(object sender, EventArgs e) {
-            DataGridViewSelectedCellCollection selectedCells = dataGrid.SelectedCells;
             dataGrid.SelectAll();
             Clipboard.SetDataObject(dataGrid.GetClipboardContent(), true);
             dataGrid.ClearSelection();
@@ -122,8 +127,34 @@ namespace VarsityReportingTool {
         }
 
         private void btnCopySelection_Click(object sender, EventArgs e) {
-            DataGridViewSelectedCellCollection selectedCells = dataGrid.SelectedCells;
             Clipboard.SetDataObject(dataGrid.GetClipboardContent(), true);
+        }
+
+        private void btnOpenInExcel_Click(object sender, EventArgs e) {
+            btnOpenInExcel.Enabled = false;
+
+            try {
+                Excel.Application xlApp = new Excel.Application();
+                Excel.Workbook xlWorkBook = xlApp.Workbooks.Add();
+
+
+                dataGrid.SelectAll();
+                Clipboard.SetDataObject(dataGrid.GetClipboardContent(), true);
+                dataGrid.ClearSelection();
+
+                dataGrid.CurrentCell.Selected = true;
+
+                xlApp.Worksheets.get_Item(1).PasteSpecial();
+
+                xlApp.Columns.WrapText = false;
+                xlApp.Columns.AutoFit();
+                xlApp.Rows.AutoFit();
+                xlApp.Visible = true;
+            } catch(Exception ex) {
+                MessageBox.Show("Error opening in Excel.\n\n" + ex.Message, "Error");
+            }
+
+            btnOpenInExcel.Enabled = true;
         }
     }
 }

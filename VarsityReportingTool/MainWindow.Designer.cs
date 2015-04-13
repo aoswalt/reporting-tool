@@ -498,6 +498,7 @@
             this.btnOpenInExcel.TabIndex = 27;
             this.btnOpenInExcel.Text = "Open In Excel";
             this.btnOpenInExcel.UseVisualStyleBackColor = true;
+            this.btnOpenInExcel.Click += new System.EventHandler(this.btnOpenInExcel_Click);
             // 
             // btnCopyAll
             // 
