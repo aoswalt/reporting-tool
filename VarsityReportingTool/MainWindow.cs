@@ -19,21 +19,37 @@ namespace VarsityReportingTool {
             InitializeComponent();
         }
 
-        private DataTable runQuery(string query) {
+        private void runQuery(string query) {
             try {
                 using(OdbcConnection conn = new OdbcConnection(ConnectionString)) {
                     conn.Open();
 
-
                     OdbcCommand command = new OdbcCommand(query);
                     command.Connection = conn;
+
+                    // handle prompting for values
+                    int parameterCount = query.Count(c => c == '?');    // linq counting for ?
+                    if(parameterCount > 0) {
+                        command.Prepare();
+
+                        for(int i = 0; i != parameterCount; ++i) {
+                            command.Parameters.Add(new OdbcParameter("Param " + i, OdbcType.VarChar));
+                        }
+
+                        // do not run command if no parameters entered
+                        if(ParameterPrompt.PromptForParameterValues(ref command) == DialogResult.Cancel) { return; }
+                    }
+
                     OdbcDataAdapter adapter = new OdbcDataAdapter(command);
                     DataTable table = new DataTable();
                     adapter.Fill(table);
 
-                    conn.Close();
-                    return table;
+                    dataGrid.DataSource = table;
                 }
+
+                dataGrid.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);   // autosize and allow resize
+
+                lblRowCount.Text = dataGrid.RowCount + " Rows Found";
             } catch(OdbcException ex) {
                 string errors = "";
 
@@ -46,18 +62,9 @@ namespace VarsityReportingTool {
                 }
 
                 MessageBox.Show(errors, "Errors");
-                return null;
             } catch(Exception ex) {
                 MessageBox.Show("Exception: " + ex.Message, "Unhandled Exception");
-                return null;
             }
-        }
-
-        private void setDataGrid(string query) {
-            dataGrid.DataSource = runQuery(query);
-            dataGrid.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);   // autosize and allow resize
-
-            lblRowCount.Text = dataGrid.RowCount + " Rows Found";
         }
 
 
@@ -71,7 +78,6 @@ namespace VarsityReportingTool {
             string query = @"SELECT d.ordnr, d.orvch, d.ditem, d.dlsiz, d.dlwr1, d.dlwr2, d.dlwr3, d.dlwr4 
                              FROM VARSITYF.DETAIL AS d ";
 
-            //string query = queryHeader + @"WHERE d.dorcy = 20 AND d.doryr = 15 AND d.dormo = 4 AND d.dorda = 2 ";
             DateTime date = DateTime.Today.AddDays(-1);
             query += @"WHERE ";
             query += String.Format(@"(d.dorcy = {0} AND d.doryr = {1} AND d.dormo = {2} AND d.dorda = {3})",
@@ -81,7 +87,7 @@ namespace VarsityReportingTool {
                 query += String.Format(@" FETCH FIRST {0} ROWS ONLY", RowLimitAmount);
             }
 
-            setDataGrid(query);
+            runQuery(query);
 
             btnRunOrderReport.Enabled = true;
         }
@@ -100,7 +106,7 @@ namespace VarsityReportingTool {
                 query += String.Format(@" FETCH FIRST {0} ROWS ONLY", RowLimitAmount);
             }
 
-            setDataGrid(query);
+            runQuery(query);
 
             btnRunQuery.Enabled = true;
         }
