@@ -14,7 +14,7 @@ namespace VarsityReportingTool {
     public partial class MainWindow : Form {
         private static string ConnectionString = "Driver={iSeries Access ODBC Driver}; System=USC; SignOn=4;";    // using Kerberos
         private static int RowLimitAmount = 1000;
-        private enum ReportType { All, Cut_Letters, RH_TS };
+        private enum ReportType { All, Cut_Letters, RH_TS, Sublm_Inline, Sublm_Cust };
 
         public MainWindow() {
             InitializeComponent();
@@ -234,6 +234,16 @@ namespace VarsityReportingTool {
                     query += @"
                         (d.dclas IN ('04U', '04V', '04W', 'L01', 'L03', 'L04', 'L09', 'F09', 'PS3', 'RSC', 'RSO')) AND 
                         ((d.ditem LIKE 'RH%') OR (d.ditem LIKE 'TS%') OR (d.ditem LIKE 'RST%')) AND ";
+                    break;
+                case ReportType.Sublm_Inline:
+                    query += @"
+                        (d.dclas IN ('04G')) AND 
+                        (d.ditem NOT LIKE 'IDC%') AND (d.ditem NOT LIKE 'COZ%') AND ";
+                    break;
+                case ReportType.Sublm_Cust:
+                    query += @"
+                        (d.dclas IN ('04G')) AND 
+                        (d.ditem LIKE 'IDC%') AND (d.ditem NOT LIKE 'COZ%') AND ";
                     break;
                 default:
                     break;
