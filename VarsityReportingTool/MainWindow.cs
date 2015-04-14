@@ -104,10 +104,98 @@ namespace VarsityReportingTool {
                     WHERE ";
 
             // enter dates
+            if(datePickerEnterDateStart.Checked || datePickerEnterDateEnd.Checked) {
+                if(datePickerEnterDateStart.Checked && !datePickerEnterDateEnd.Checked) {
+                    // start and no end
+                    DateTime date = datePickerEnterDateStart.Value;
+                    query += String.Format(@"(d.dorcy = {0} AND d.doryr = {1} AND d.dormo = {2} AND d.dorda = {3}) AND ", 
+                                           date.Year / 100, date.Year % 100, date.Month, date.Day);
+                } else if(!datePickerEnterDateStart.Checked && datePickerEnterDateEnd.Checked) {
+                    // end and no start
+                    DateTime date = datePickerEnterDateEnd.Value;
+                    query += String.Format(@"(d.dorcy = {0} AND d.doryr = {1} AND d.dormo = {2} AND d.dorda = {3}) AND ",
+                                           date.Year / 100, date.Year % 100, date.Month, date.Day);
+                } else {
+                    // using both
+                    DateTime start = datePickerEnterDateStart.Value;
+                    DateTime end = datePickerEnterDateEnd.Value;
+
+                    if(start > end) {
+                        query += "(";
+                        DateTime date = start;
+                        while(date > end) {
+                            query += String.Format(@"(d.dorcy = {0} AND d.doryr = {1} AND d.dormo = {2} AND d.dorda = {3}) OR ",
+                                                   date.Year / 100, date.Year % 100, date.Month, date.Day);
+                            date = date.AddDays(-1);
+                        }
+                        query += String.Format(@"(d.dorcy = {0} AND d.doryr = {1} AND d.dormo = {2} AND d.dorda = {3})",
+                                               end.Year / 100, end.Year % 100, end.Month, end.Day);
+                        query += ") AND ";
+                    } else if(end > start) {
+                        query += "(";
+                        DateTime date = end;
+                        while(date > start) {
+                            query += String.Format(@"(d.dorcy = {0} AND d.doryr = {1} AND d.dormo = {2} AND d.dorda = {3}) OR ",
+                                                   date.Year / 100, date.Year % 100, date.Month, date.Day);
+                            date = date.AddDays(-1);
+                        }
+                        query += String.Format(@"(d.dorcy = {0} AND d.doryr = {1} AND d.dormo = {2} AND d.dorda = {3})",
+                                               start.Year / 100, start.Year % 100, start.Month, start.Day);
+                        query += ") AND ";
+                    } else {    // equal
+                        DateTime date = start;
+                        query += String.Format(@"(d.dorcy = {0} AND d.doryr = {1} AND d.dormo = {2} AND d.dorda = {3}) AND ",
+                                               date.Year / 100, date.Year % 100, date.Month, date.Day);
+                    }
+                }
+            }
+
             // schedule dates
-            DateTime date = DateTime.Today.AddDays(-1);
-            String.Format(@"(d.dorcy = {0} AND d.doryr = {1} AND d.dormo = {2} AND d.dorda = {3})",
-                            date.Year / 100, date.Year % 100, date.Month, date.Day);
+            if(datePickerScheduleDateStart.Checked || datePickerScheduleDateEnd.Checked) {
+                if(datePickerScheduleDateStart.Checked && !datePickerScheduleDateEnd.Checked) {
+                    // start and no end
+                    DateTime date = datePickerScheduleDateStart.Value;
+                    query += String.Format(@"(d.dsccy = {0} AND d.dscyr = {1} AND d.dscmo = {2} AND d.dscda = {3}) AND ",
+                                           date.Year / 100, date.Year % 100, date.Month, date.Day);
+                } else if(!datePickerScheduleDateStart.Checked && datePickerScheduleDateEnd.Checked) {
+                    // end and no start
+                    DateTime date = datePickerScheduleDateEnd.Value;
+                    query += String.Format(@"(d.dsccy = {0} AND d.dscyr = {1} AND d.dscmo = {2} AND d.dscda = {3}) AND ",
+                                           date.Year / 100, date.Year % 100, date.Month, date.Day);
+                } else {
+                    // using both
+                    DateTime start = datePickerScheduleDateStart.Value;
+                    DateTime end = datePickerScheduleDateEnd.Value;
+
+                    if(start > end) {
+                        query += "(";
+                        DateTime date = start;
+                        while(date > end) {
+                            query += String.Format(@"(d.dsccy = {0} AND d.dscyr = {1} AND d.dscmo = {2} AND d.dscda = {3}) OR ",
+                                                   date.Year / 100, date.Year % 100, date.Month, date.Day);
+                            date = date.AddDays(-1);
+                        }
+                        query += String.Format(@"(d.dsccy = {0} AND d.dscyr = {1} AND d.dscmo = {2} AND d.dscda = {3})",
+                                               end.Year / 100, end.Year % 100, end.Month, end.Day);
+                        query += ") AND ";
+                    } else if(end > start) {
+                        query += "(";
+                        DateTime date = end;
+                        while(date > start) {
+                            query += String.Format(@"(d.dsccy = {0} AND d.dscyr = {1} AND d.dscmo = {2} AND d.dscda = {3}) OR ",
+                                                   date.Year / 100, date.Year % 100, date.Month, date.Day);
+                            date = date.AddDays(-1);
+                        }
+                        query += String.Format(@"(d.dsccy = {0} AND d.dscyr = {1} AND d.dscmo = {2} AND d.dscda = {3})",
+                                               start.Year / 100, start.Year % 100, start.Month, start.Day);
+                        query += ") AND ";
+                    } else {    // equal
+                        DateTime date = start;
+                        query += String.Format(@"(d.dsccy = {0} AND d.dscyr = {1} AND d.dscmo = {2} AND d.dscda = {3}) AND ",
+                                               date.Year / 100, date.Year % 100, date.Month, date.Day);
+                    }
+                }
+            }
 
             // order number
             if(!string.IsNullOrWhiteSpace(txtOrderNumber.Text)) {
@@ -133,12 +221,6 @@ namespace VarsityReportingTool {
             if(!string.IsNullOrWhiteSpace(txtSize.Text)) {
                 query += String.Format("(d.dlsiz = {0}) AND ", txtSize.Text);
             }
-
-            // report type
-
-                                         /*((d.dorcy = 20) AND (d.doryr = 15) AND (d.dormo = ?) AND (d.dorda = ?)) AND 
-                                         (d.dclas IN ('041', '049', '04C', '04D', '04Y', 'F09', 'PS3', 'L02', 'L05', 'L10', 'S03', 'SKL', 'VTT')) AND 
-                                         (d.ditem NOT LIKE 'OZ%') AND*/
 
             switch((ReportType)Enum.Parse(typeof(ReportType), comboboxReportType.SelectedValue.ToString())) {
                 case ReportType.All:
