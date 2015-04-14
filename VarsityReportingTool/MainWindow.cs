@@ -14,9 +14,11 @@ namespace VarsityReportingTool {
     public partial class MainWindow : Form {
         private static string ConnectionString = "Driver={iSeries Access ODBC Driver}; System=USC; SignOn=4;";    // using Kerberos
         private static int RowLimitAmount = 1000;
+        private enum ReportType { All, Cut_Letters, RH_TS };
 
         public MainWindow() {
             InitializeComponent();
+            this.comboboxReportType.DataSource = Enum.GetNames(typeof(ReportType));
         }
 
         private void runQuery(string query) {
@@ -69,20 +71,117 @@ namespace VarsityReportingTool {
 
 
         // ====================
+        // Menu
+        // ====================
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e) {
+            this.Close();
+        }
+
+
+        // ====================
         // Order Page
         // ====================
 
         private void btnRunOrderReport_Click(object sender, EventArgs e) {
             btnRunOrderReport.Enabled = false;
 
-            string query = @"SELECT d.ordnr, d.orvch, d.ditem, d.dlsiz, d.dlwr1, d.dlwr2, d.dlwr3, d.dlwr4 
-                             FROM VARSITYF.DETAIL AS d ";
+            // assemble query from filled components
+            string query = @"
+                SELECT det.dhous, det.scdat, det.endat, det.ordnr, det.orvch, 
+                    det.ditem, det.dlsiz, siz.letwid, nam.letname, 
+                    det.dlwr1, det.dlwr2, det.dlwr3, det.dlwr4, det.dclr1, det.dclr2, det.dclr3, det.dclr4, det.rudat
+                FROM (
+                    SELECT d.dhous,
+                            CASE WHEN d.dscmo = 0 THEN NULL ELSE DATE(d.dsccy||d.dscyr||'-'||RIGHT('00'||d.dscmo, 2)||'-'||RIGHT('00'||d.dscda, 2)) END AS scdat,
+                            DATE(d.dorcy||d.doryr||'-'||RIGHT('00'||d.dormo, 2)||'-'||RIGHT('00'||d.dorda, 2)) AS endat,
+                            d.ordnr, d.orvch, d.dpvch, d.ditem, d.dlsiz, 
+                            d.dlwr1, d.dlwr2, d.dlwr3, d.dlwr4, d.dclr1, d.dclr2, d.dclr3, d.dclr4,
+                            CASE d.drumo WHEN 0 THEN NULL ELSE DATE(d.drucy||d.druyr||'-'||RIGHT('00'||d.drumo, 2)||'-'||RIGHT('00'||d.druda, 2)) END AS rudat
 
+                    FROM VARSITYF.DETAIL AS d
+
+                    WHERE ";
+
+            // enter dates
+            // schedule dates
             DateTime date = DateTime.Today.AddDays(-1);
-            query += @"WHERE ";
-            query += String.Format(@"(d.dorcy = {0} AND d.doryr = {1} AND d.dormo = {2} AND d.dorda = {3})",
-                                   date.Year / 100, date.Year % 100, date.Month, date.Day);
+            String.Format(@"(d.dorcy = {0} AND d.doryr = {1} AND d.dormo = {2} AND d.dorda = {3})",
+                            date.Year / 100, date.Year % 100, date.Month, date.Day);
 
+            // order number
+            if(!string.IsNullOrWhiteSpace(txtOrderNumber.Text)) {
+                query += String.Format("(d.ordnr = {0}) AND ", txtOrderNumber.Text);
+            }
+
+            // voucher
+            if(!string.IsNullOrWhiteSpace(txtVoucher.Text)) {
+                query += String.Format("(d.orvch = {0}) AND ", txtVoucher.Text);
+            }
+
+            // house
+            if(!string.IsNullOrWhiteSpace(txtHouse.Text)) {
+                query += String.Format("(TRIM(d.dhous) LIKE '{0}') AND ", txtHouse.Text.ToUpper());
+            }
+
+            // style code
+            if(!string.IsNullOrWhiteSpace(txtStyleCode.Text)) {
+                query += String.Format("(TRIM(d.ditem) LIKE '{0}') AND ", txtStyleCode.Text.ToUpper());
+            }
+
+            // size
+            if(!string.IsNullOrWhiteSpace(txtSize.Text)) {
+                query += String.Format("(d.dlsiz = {0}) AND ", txtSize.Text);
+            }
+
+            // report type
+
+                                         /*((d.dorcy = 20) AND (d.doryr = 15) AND (d.dormo = ?) AND (d.dorda = ?)) AND 
+                                         (d.dclas IN ('041', '049', '04C', '04D', '04Y', 'F09', 'PS3', 'L02', 'L05', 'L10', 'S03', 'SKL', 'VTT')) AND 
+                                         (d.ditem NOT LIKE 'OZ%') AND*/
+
+            switch((ReportType)Enum.Parse(typeof(ReportType), comboboxReportType.SelectedValue.ToString())) {
+                case ReportType.All:
+                    break;
+                case ReportType.Cut_Letters:
+                    query += @"
+                        (d.dclas IN ('041', '049', '04C', '04D', '04Y', 'F09', 'PS3', 'L02', 'L05', 'L10', 'S03', 'SKL', 'VTT')) AND 
+                        (d.ditem NOT LIKE 'OZ%') AND ";
+                    break;
+                case ReportType.RH_TS:
+                    query += @"
+                        (d.dclas IN ('04U', '04V', '04W', 'L01', 'L03', 'L04', 'L09', 'F09', 'PS3', 'RSC', 'RSO')) AND 
+                        ((d.ditem LIKE 'RH%') OR (d.ditem LIKE 'TS%') OR (d.ditem LIKE 'RST%')) AND ";
+                    break;
+                default:
+                    break;
+            }
+
+            query +=                    
+                    @"(d.dscda > 0)
+                ) AS det
+
+                LEFT JOIN 
+                            DJLIBR.ORD_NAM_C 
+                AS nam
+                ON det.ordnr = nam.ordnr AND det.orvch = nam.orvch AND nam.letname <> ''
+
+                LEFT JOIN (
+                            SELECT DISTINCT s.ordnr, s.orvch, s.letwid
+                            FROM VARSITYF.HLDSIZ AS s
+                ) AS siz
+                ON det.ordnr = siz.ordnr AND det.dpvch = siz.orvch ";
+            
+            // spec
+            if(!string.IsNullOrWhiteSpace(txtSpec.Text)) {
+                query += String.Format("WHERE (siz.letwid = {0}) ", txtSpec.Text);
+            }
+
+            // default sort by style code
+            query +=
+              @"ORDER BY det.ditem";
+
+            // row limit option
             if(chkOrderLimitRows.Checked) {
                 query += String.Format(@" FETCH FIRST {0} ROWS ONLY", RowLimitAmount);
             }
@@ -145,7 +244,9 @@ namespace VarsityReportingTool {
 
 
                 dataGrid.SelectAll();
+                this.dataGrid.ClipboardCopyMode = DataGridViewClipboardCopyMode.EnableAlwaysIncludeHeaderText;
                 Clipboard.SetDataObject(dataGrid.GetClipboardContent(), true);
+                this.dataGrid.ClipboardCopyMode = DataGridViewClipboardCopyMode.EnableWithAutoHeaderText;
                 dataGrid.ClearSelection();
 
                 dataGrid.CurrentCell.Selected = true;
@@ -161,6 +262,18 @@ namespace VarsityReportingTool {
             }
 
             btnOpenInExcel.Enabled = true;
+        }
+
+        private void reportTabControl_SelectedIndexChanged(object sender, EventArgs e) {
+            switch(((TabControl)sender).SelectedIndex) {
+                case 2:     // query tab
+                    this.AcceptButton = this.btnRunQuery;
+                    break;
+                case 1:     // order report tab
+                default:
+                    this.AcceptButton = this.btnRunOrderReport;
+                    break;
+            }
         }
     }
 }

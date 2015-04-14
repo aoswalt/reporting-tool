@@ -39,22 +39,24 @@
             this.label10 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.reportTabControl = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.comboboxReportType = new System.Windows.Forms.ComboBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.chkOrderLimitRows = new System.Windows.Forms.CheckBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.btnRunOrderReport = new System.Windows.Forms.Button();
             this.btnClearOrderEntries = new System.Windows.Forms.Button();
-            this.dateTimePicker4 = new System.Windows.Forms.DateTimePicker();
-            this.dateTimePicker3 = new System.Windows.Forms.DateTimePicker();
-            this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
-            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
-            this.textBox9 = new System.Windows.Forms.TextBox();
-            this.textBox8 = new System.Windows.Forms.TextBox();
-            this.textBox7 = new System.Windows.Forms.TextBox();
-            this.textBox6 = new System.Windows.Forms.TextBox();
-            this.textBox5 = new System.Windows.Forms.TextBox();
-            this.textBox4 = new System.Windows.Forms.TextBox();
+            this.datePickerEnterDateEnd = new System.Windows.Forms.DateTimePicker();
+            this.datePickerScheduleDateStart = new System.Windows.Forms.DateTimePicker();
+            this.datePickerScheduleDateEnd = new System.Windows.Forms.DateTimePicker();
+            this.datePickerEnterDateStart = new System.Windows.Forms.DateTimePicker();
+            this.txtOrderNumber = new System.Windows.Forms.TextBox();
+            this.txtVoucher = new System.Windows.Forms.TextBox();
+            this.txtHouse = new System.Windows.Forms.TextBox();
+            this.txtStyleCode = new System.Windows.Forms.TextBox();
+            this.txtSize = new System.Windows.Forms.TextBox();
+            this.txtSpec = new System.Windows.Forms.TextBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.chkQueryLimitRows = new System.Windows.Forms.CheckBox();
             this.txtQuery = new System.Windows.Forms.TextBox();
@@ -67,7 +69,7 @@
             this.btnCopyAll = new System.Windows.Forms.Button();
             this.dataGrid = new System.Windows.Forms.DataGridView();
             this.menuStrip1.SuspendLayout();
-            this.tabControl1.SuspendLayout();
+            this.reportTabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -122,6 +124,7 @@
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
             this.exitToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
             this.exitToolStripMenuItem.Text = "Exit";
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
             // label1
             // 
@@ -213,34 +216,37 @@
             this.label12.TabIndex = 11;
             this.label12.Text = "Enter Date Start";
             // 
-            // tabControl1
+            // reportTabControl
             // 
-            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.reportTabControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Location = new System.Drawing.Point(0, 0);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(564, 197);
-            this.tabControl1.TabIndex = 12;
+            this.reportTabControl.Controls.Add(this.tabPage1);
+            this.reportTabControl.Controls.Add(this.tabPage2);
+            this.reportTabControl.Location = new System.Drawing.Point(0, 0);
+            this.reportTabControl.Name = "reportTabControl";
+            this.reportTabControl.SelectedIndex = 0;
+            this.reportTabControl.Size = new System.Drawing.Size(564, 197);
+            this.reportTabControl.TabIndex = 12;
+            this.reportTabControl.SelectedIndexChanged += new System.EventHandler(this.reportTabControl_SelectedIndexChanged);
             // 
             // tabPage1
             // 
             this.tabPage1.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPage1.Controls.Add(this.comboboxReportType);
+            this.tabPage1.Controls.Add(this.label4);
             this.tabPage1.Controls.Add(this.chkOrderLimitRows);
             this.tabPage1.Controls.Add(this.panel1);
-            this.tabPage1.Controls.Add(this.dateTimePicker4);
-            this.tabPage1.Controls.Add(this.dateTimePicker3);
-            this.tabPage1.Controls.Add(this.dateTimePicker2);
-            this.tabPage1.Controls.Add(this.dateTimePicker1);
-            this.tabPage1.Controls.Add(this.textBox9);
-            this.tabPage1.Controls.Add(this.textBox8);
-            this.tabPage1.Controls.Add(this.textBox7);
-            this.tabPage1.Controls.Add(this.textBox6);
-            this.tabPage1.Controls.Add(this.textBox5);
-            this.tabPage1.Controls.Add(this.textBox4);
+            this.tabPage1.Controls.Add(this.datePickerEnterDateEnd);
+            this.tabPage1.Controls.Add(this.datePickerScheduleDateStart);
+            this.tabPage1.Controls.Add(this.datePickerScheduleDateEnd);
+            this.tabPage1.Controls.Add(this.datePickerEnterDateStart);
+            this.tabPage1.Controls.Add(this.txtOrderNumber);
+            this.tabPage1.Controls.Add(this.txtVoucher);
+            this.tabPage1.Controls.Add(this.txtHouse);
+            this.tabPage1.Controls.Add(this.txtStyleCode);
+            this.tabPage1.Controls.Add(this.txtSize);
+            this.tabPage1.Controls.Add(this.txtSpec);
             this.tabPage1.Controls.Add(this.label12);
             this.tabPage1.Controls.Add(this.label1);
             this.tabPage1.Controls.Add(this.label11);
@@ -257,6 +263,23 @@
             this.tabPage1.Size = new System.Drawing.Size(556, 171);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Order";
+            // 
+            // comboboxReportType
+            // 
+            this.comboboxReportType.FormattingEnabled = true;
+            this.comboboxReportType.Location = new System.Drawing.Point(463, 147);
+            this.comboboxReportType.Name = "comboboxReportType";
+            this.comboboxReportType.Size = new System.Drawing.Size(81, 21);
+            this.comboboxReportType.TabIndex = 32;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(391, 150);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(66, 13);
+            this.label4.TabIndex = 31;
+            this.label4.Text = "Report Type";
             // 
             // chkOrderLimitRows
             // 
@@ -299,88 +322,88 @@
             this.btnClearOrderEntries.Text = "Clear Entries";
             this.btnClearOrderEntries.UseVisualStyleBackColor = true;
             // 
-            // dateTimePicker4
+            // datePickerEnterDateEnd
             // 
-            this.dateTimePicker4.Checked = false;
-            this.dateTimePicker4.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dateTimePicker4.Location = new System.Drawing.Point(95, 32);
-            this.dateTimePicker4.Name = "dateTimePicker4";
-            this.dateTimePicker4.ShowCheckBox = true;
-            this.dateTimePicker4.Size = new System.Drawing.Size(100, 20);
-            this.dateTimePicker4.TabIndex = 26;
+            this.datePickerEnterDateEnd.Checked = false;
+            this.datePickerEnterDateEnd.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.datePickerEnterDateEnd.Location = new System.Drawing.Point(95, 32);
+            this.datePickerEnterDateEnd.Name = "datePickerEnterDateEnd";
+            this.datePickerEnterDateEnd.ShowCheckBox = true;
+            this.datePickerEnterDateEnd.Size = new System.Drawing.Size(100, 20);
+            this.datePickerEnterDateEnd.TabIndex = 26;
             // 
-            // dateTimePicker3
+            // datePickerScheduleDateStart
             // 
-            this.dateTimePicker3.Checked = false;
-            this.dateTimePicker3.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dateTimePicker3.Location = new System.Drawing.Point(331, 6);
-            this.dateTimePicker3.Name = "dateTimePicker3";
-            this.dateTimePicker3.ShowCheckBox = true;
-            this.dateTimePicker3.Size = new System.Drawing.Size(100, 20);
-            this.dateTimePicker3.TabIndex = 25;
-            this.dateTimePicker3.Value = new System.DateTime(2015, 4, 10, 10, 35, 29, 0);
+            this.datePickerScheduleDateStart.Checked = false;
+            this.datePickerScheduleDateStart.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.datePickerScheduleDateStart.Location = new System.Drawing.Point(331, 6);
+            this.datePickerScheduleDateStart.Name = "datePickerScheduleDateStart";
+            this.datePickerScheduleDateStart.ShowCheckBox = true;
+            this.datePickerScheduleDateStart.Size = new System.Drawing.Size(100, 20);
+            this.datePickerScheduleDateStart.TabIndex = 25;
+            this.datePickerScheduleDateStart.Value = new System.DateTime(2015, 4, 10, 10, 35, 29, 0);
             // 
-            // dateTimePicker2
+            // datePickerScheduleDateEnd
             // 
-            this.dateTimePicker2.Checked = false;
-            this.dateTimePicker2.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dateTimePicker2.Location = new System.Drawing.Point(331, 32);
-            this.dateTimePicker2.Name = "dateTimePicker2";
-            this.dateTimePicker2.ShowCheckBox = true;
-            this.dateTimePicker2.Size = new System.Drawing.Size(100, 20);
-            this.dateTimePicker2.TabIndex = 24;
+            this.datePickerScheduleDateEnd.Checked = false;
+            this.datePickerScheduleDateEnd.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.datePickerScheduleDateEnd.Location = new System.Drawing.Point(331, 32);
+            this.datePickerScheduleDateEnd.Name = "datePickerScheduleDateEnd";
+            this.datePickerScheduleDateEnd.ShowCheckBox = true;
+            this.datePickerScheduleDateEnd.Size = new System.Drawing.Size(100, 20);
+            this.datePickerScheduleDateEnd.TabIndex = 24;
             // 
-            // dateTimePicker1
+            // datePickerEnterDateStart
             // 
-            this.dateTimePicker1.Checked = false;
-            this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dateTimePicker1.Location = new System.Drawing.Point(95, 6);
-            this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.ShowCheckBox = true;
-            this.dateTimePicker1.Size = new System.Drawing.Size(100, 20);
-            this.dateTimePicker1.TabIndex = 23;
+            this.datePickerEnterDateStart.Checked = false;
+            this.datePickerEnterDateStart.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.datePickerEnterDateStart.Location = new System.Drawing.Point(95, 6);
+            this.datePickerEnterDateStart.Name = "datePickerEnterDateStart";
+            this.datePickerEnterDateStart.ShowCheckBox = true;
+            this.datePickerEnterDateStart.Size = new System.Drawing.Size(100, 20);
+            this.datePickerEnterDateStart.TabIndex = 23;
             // 
-            // textBox9
+            // txtOrderNumber
             // 
-            this.textBox9.Location = new System.Drawing.Point(95, 73);
-            this.textBox9.Name = "textBox9";
-            this.textBox9.Size = new System.Drawing.Size(100, 20);
-            this.textBox9.TabIndex = 19;
+            this.txtOrderNumber.Location = new System.Drawing.Point(95, 73);
+            this.txtOrderNumber.Name = "txtOrderNumber";
+            this.txtOrderNumber.Size = new System.Drawing.Size(100, 20);
+            this.txtOrderNumber.TabIndex = 19;
             // 
-            // textBox8
+            // txtVoucher
             // 
-            this.textBox8.Location = new System.Drawing.Point(264, 73);
-            this.textBox8.Name = "textBox8";
-            this.textBox8.Size = new System.Drawing.Size(100, 20);
-            this.textBox8.TabIndex = 18;
+            this.txtVoucher.Location = new System.Drawing.Point(264, 73);
+            this.txtVoucher.Name = "txtVoucher";
+            this.txtVoucher.Size = new System.Drawing.Size(100, 20);
+            this.txtVoucher.TabIndex = 18;
             // 
-            // textBox7
+            // txtHouse
             // 
-            this.textBox7.Location = new System.Drawing.Point(444, 73);
-            this.textBox7.Name = "textBox7";
-            this.textBox7.Size = new System.Drawing.Size(100, 20);
-            this.textBox7.TabIndex = 17;
+            this.txtHouse.Location = new System.Drawing.Point(444, 73);
+            this.txtHouse.Name = "txtHouse";
+            this.txtHouse.Size = new System.Drawing.Size(100, 20);
+            this.txtHouse.TabIndex = 17;
             // 
-            // textBox6
+            // txtStyleCode
             // 
-            this.textBox6.Location = new System.Drawing.Point(95, 99);
-            this.textBox6.Name = "textBox6";
-            this.textBox6.Size = new System.Drawing.Size(100, 20);
-            this.textBox6.TabIndex = 16;
+            this.txtStyleCode.Location = new System.Drawing.Point(95, 99);
+            this.txtStyleCode.Name = "txtStyleCode";
+            this.txtStyleCode.Size = new System.Drawing.Size(100, 20);
+            this.txtStyleCode.TabIndex = 16;
             // 
-            // textBox5
+            // txtSize
             // 
-            this.textBox5.Location = new System.Drawing.Point(264, 99);
-            this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(100, 20);
-            this.textBox5.TabIndex = 15;
+            this.txtSize.Location = new System.Drawing.Point(264, 99);
+            this.txtSize.Name = "txtSize";
+            this.txtSize.Size = new System.Drawing.Size(100, 20);
+            this.txtSize.TabIndex = 15;
             // 
-            // textBox4
+            // txtSpec
             // 
-            this.textBox4.Location = new System.Drawing.Point(444, 99);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(100, 20);
-            this.textBox4.TabIndex = 14;
+            this.txtSpec.Location = new System.Drawing.Point(444, 99);
+            this.txtSpec.Name = "txtSpec";
+            this.txtSpec.Size = new System.Drawing.Size(100, 20);
+            this.txtSpec.TabIndex = 14;
             // 
             // tabPage2
             // 
@@ -445,7 +468,7 @@
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.tabControl1);
+            this.splitContainer1.Panel1.Controls.Add(this.reportTabControl);
             this.splitContainer1.Panel1.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.splitContainer1.Panel1MinSize = 200;
             // 
@@ -519,7 +542,6 @@
             this.dataGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.dataGrid.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableAlwaysIncludeHeaderText;
             this.dataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dataGrid.Location = new System.Drawing.Point(4, 3);
             this.dataGrid.Name = "dataGrid";
@@ -530,6 +552,7 @@
             // 
             // MainWindow
             // 
+            this.AcceptButton = this.btnRunOrderReport;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(564, 566);
@@ -541,7 +564,7 @@
             this.Text = "Reporting Tool";
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-            this.tabControl1.ResumeLayout(false);
+            this.reportTabControl.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
             this.panel1.ResumeLayout(false);
@@ -577,19 +600,19 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabControl reportTabControl;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
-        private System.Windows.Forms.DateTimePicker dateTimePicker1;
-        private System.Windows.Forms.TextBox textBox9;
-        private System.Windows.Forms.TextBox textBox8;
-        private System.Windows.Forms.TextBox textBox7;
-        private System.Windows.Forms.TextBox textBox6;
-        private System.Windows.Forms.TextBox textBox5;
-        private System.Windows.Forms.TextBox textBox4;
-        private System.Windows.Forms.DateTimePicker dateTimePicker4;
-        private System.Windows.Forms.DateTimePicker dateTimePicker3;
-        private System.Windows.Forms.DateTimePicker dateTimePicker2;
+        private System.Windows.Forms.DateTimePicker datePickerEnterDateStart;
+        private System.Windows.Forms.TextBox txtOrderNumber;
+        private System.Windows.Forms.TextBox txtVoucher;
+        private System.Windows.Forms.TextBox txtHouse;
+        private System.Windows.Forms.TextBox txtStyleCode;
+        private System.Windows.Forms.TextBox txtSize;
+        private System.Windows.Forms.TextBox txtSpec;
+        private System.Windows.Forms.DateTimePicker datePickerEnterDateEnd;
+        private System.Windows.Forms.DateTimePicker datePickerScheduleDateStart;
+        private System.Windows.Forms.DateTimePicker datePickerScheduleDateEnd;
         private System.Windows.Forms.Button btnClearOrderEntries;
         private System.Windows.Forms.Button btnRunOrderReport;
         private System.Windows.Forms.SplitContainer splitContainer1;
@@ -604,6 +627,8 @@
         private System.Windows.Forms.CheckBox chkOrderLimitRows;
         private System.Windows.Forms.CheckBox chkQueryLimitRows;
         private System.Windows.Forms.Label lblRowCount;
+        private System.Windows.Forms.ComboBox comboboxReportType;
+        private System.Windows.Forms.Label label4;
     }
 }
 
