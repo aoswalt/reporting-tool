@@ -71,6 +71,24 @@ namespace VarsityReportingTool {
 
 
         // ====================
+        // Main Window
+        // ====================
+
+        private void reportTabControl_SelectedIndexChanged(object sender, EventArgs e) {
+            switch(((TabControl)sender).SelectedIndex) {
+                case 2:     // query tab
+                    this.AcceptButton = btnRunQuery;
+                    this.CancelButton = btnClearOrderEntries;
+                    break;
+                case 1:     // order report tab
+                default:
+                    this.AcceptButton = btnRunOrderReport;
+                    break;
+            }
+        }
+
+
+        // ====================
         // Menu
         // ====================
 
@@ -283,6 +301,27 @@ namespace VarsityReportingTool {
             btnRunOrderReport.Enabled = true;
         }
 
+        private void btnClearOrderEntries_Click(object sender, EventArgs e) {
+            datePickerEnterDateStart.Value = DateTime.Today;
+            datePickerEnterDateStart.Checked = false;
+            datePickerEnterDateEnd.Value = DateTime.Today;
+            datePickerEnterDateEnd.Checked = false;
+            datePickerScheduleDateStart.Value = DateTime.Today;
+            datePickerScheduleDateStart.Checked = false;
+            datePickerScheduleDateEnd.Value = DateTime.Today;
+            datePickerScheduleDateEnd.Checked = false;
+
+            txtOrderNumber.Text = "";
+            txtVoucher.Text = "";
+            txtHouse.Text = "";
+            txtStyleCode.Text = "";
+            txtSize.Text = "";
+            txtSpec.Text = "";
+
+            comboboxReportType.SelectedIndex = 0;
+            chkOrderLimitRows.Checked = true;
+        }
+
 
         // ====================
         // Query Page
@@ -354,18 +393,6 @@ namespace VarsityReportingTool {
             }
 
             btnOpenInExcel.Enabled = true;
-        }
-
-        private void reportTabControl_SelectedIndexChanged(object sender, EventArgs e) {
-            switch(((TabControl)sender).SelectedIndex) {
-                case 2:     // query tab
-                    this.AcceptButton = this.btnRunQuery;
-                    break;
-                case 1:     // order report tab
-                default:
-                    this.AcceptButton = this.btnRunOrderReport;
-                    break;
-            }
         }
     }
 }

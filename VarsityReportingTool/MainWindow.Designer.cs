@@ -228,6 +228,7 @@
             this.reportTabControl.SelectedIndex = 0;
             this.reportTabControl.Size = new System.Drawing.Size(564, 197);
             this.reportTabControl.TabIndex = 12;
+            this.reportTabControl.TabStop = false;
             this.reportTabControl.SelectedIndexChanged += new System.EventHandler(this.reportTabControl_SelectedIndexChanged);
             // 
             // tabPage1
@@ -270,7 +271,7 @@
             this.comboboxReportType.Location = new System.Drawing.Point(463, 147);
             this.comboboxReportType.Name = "comboboxReportType";
             this.comboboxReportType.Size = new System.Drawing.Size(81, 21);
-            this.comboboxReportType.TabIndex = 32;
+            this.comboboxReportType.TabIndex = 10;
             // 
             // label4
             // 
@@ -290,7 +291,7 @@
             this.chkOrderLimitRows.Location = new System.Drawing.Point(8, 149);
             this.chkOrderLimitRows.Name = "chkOrderLimitRows";
             this.chkOrderLimitRows.Size = new System.Drawing.Size(120, 17);
-            this.chkOrderLimitRows.TabIndex = 30;
+            this.chkOrderLimitRows.TabIndex = 11;
             this.chkOrderLimitRows.Text = "Limit To 1000 Rows";
             this.chkOrderLimitRows.UseVisualStyleBackColor = true;
             // 
@@ -308,19 +309,21 @@
             this.btnRunOrderReport.Location = new System.Drawing.Point(3, 5);
             this.btnRunOrderReport.Name = "btnRunOrderReport";
             this.btnRunOrderReport.Size = new System.Drawing.Size(90, 23);
-            this.btnRunOrderReport.TabIndex = 27;
+            this.btnRunOrderReport.TabIndex = 20;
             this.btnRunOrderReport.Text = "Run Report";
             this.btnRunOrderReport.UseVisualStyleBackColor = true;
             this.btnRunOrderReport.Click += new System.EventHandler(this.btnRunOrderReport_Click);
             // 
             // btnClearOrderEntries
             // 
+            this.btnClearOrderEntries.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnClearOrderEntries.Location = new System.Drawing.Point(109, 5);
             this.btnClearOrderEntries.Name = "btnClearOrderEntries";
             this.btnClearOrderEntries.Size = new System.Drawing.Size(90, 23);
-            this.btnClearOrderEntries.TabIndex = 28;
+            this.btnClearOrderEntries.TabIndex = 21;
             this.btnClearOrderEntries.Text = "Clear Entries";
             this.btnClearOrderEntries.UseVisualStyleBackColor = true;
+            this.btnClearOrderEntries.Click += new System.EventHandler(this.btnClearOrderEntries_Click);
             // 
             // datePickerEnterDateEnd
             // 
@@ -330,7 +333,7 @@
             this.datePickerEnterDateEnd.Name = "datePickerEnterDateEnd";
             this.datePickerEnterDateEnd.ShowCheckBox = true;
             this.datePickerEnterDateEnd.Size = new System.Drawing.Size(100, 20);
-            this.datePickerEnterDateEnd.TabIndex = 26;
+            this.datePickerEnterDateEnd.TabIndex = 1;
             // 
             // datePickerScheduleDateStart
             // 
@@ -340,7 +343,7 @@
             this.datePickerScheduleDateStart.Name = "datePickerScheduleDateStart";
             this.datePickerScheduleDateStart.ShowCheckBox = true;
             this.datePickerScheduleDateStart.Size = new System.Drawing.Size(100, 20);
-            this.datePickerScheduleDateStart.TabIndex = 25;
+            this.datePickerScheduleDateStart.TabIndex = 2;
             this.datePickerScheduleDateStart.Value = new System.DateTime(2015, 4, 10, 10, 35, 29, 0);
             // 
             // datePickerScheduleDateEnd
@@ -351,7 +354,7 @@
             this.datePickerScheduleDateEnd.Name = "datePickerScheduleDateEnd";
             this.datePickerScheduleDateEnd.ShowCheckBox = true;
             this.datePickerScheduleDateEnd.Size = new System.Drawing.Size(100, 20);
-            this.datePickerScheduleDateEnd.TabIndex = 24;
+            this.datePickerScheduleDateEnd.TabIndex = 3;
             // 
             // datePickerEnterDateStart
             // 
@@ -361,49 +364,49 @@
             this.datePickerEnterDateStart.Name = "datePickerEnterDateStart";
             this.datePickerEnterDateStart.ShowCheckBox = true;
             this.datePickerEnterDateStart.Size = new System.Drawing.Size(100, 20);
-            this.datePickerEnterDateStart.TabIndex = 23;
+            this.datePickerEnterDateStart.TabIndex = 0;
             // 
             // txtOrderNumber
             // 
             this.txtOrderNumber.Location = new System.Drawing.Point(95, 73);
             this.txtOrderNumber.Name = "txtOrderNumber";
             this.txtOrderNumber.Size = new System.Drawing.Size(100, 20);
-            this.txtOrderNumber.TabIndex = 19;
+            this.txtOrderNumber.TabIndex = 4;
             // 
             // txtVoucher
             // 
             this.txtVoucher.Location = new System.Drawing.Point(264, 73);
             this.txtVoucher.Name = "txtVoucher";
             this.txtVoucher.Size = new System.Drawing.Size(100, 20);
-            this.txtVoucher.TabIndex = 18;
+            this.txtVoucher.TabIndex = 5;
             // 
             // txtHouse
             // 
             this.txtHouse.Location = new System.Drawing.Point(444, 73);
             this.txtHouse.Name = "txtHouse";
             this.txtHouse.Size = new System.Drawing.Size(100, 20);
-            this.txtHouse.TabIndex = 17;
+            this.txtHouse.TabIndex = 6;
             // 
             // txtStyleCode
             // 
             this.txtStyleCode.Location = new System.Drawing.Point(95, 99);
             this.txtStyleCode.Name = "txtStyleCode";
             this.txtStyleCode.Size = new System.Drawing.Size(100, 20);
-            this.txtStyleCode.TabIndex = 16;
+            this.txtStyleCode.TabIndex = 7;
             // 
             // txtSize
             // 
             this.txtSize.Location = new System.Drawing.Point(264, 99);
             this.txtSize.Name = "txtSize";
             this.txtSize.Size = new System.Drawing.Size(100, 20);
-            this.txtSize.TabIndex = 15;
+            this.txtSize.TabIndex = 8;
             // 
             // txtSpec
             // 
             this.txtSpec.Location = new System.Drawing.Point(444, 99);
             this.txtSpec.Name = "txtSpec";
             this.txtSpec.Size = new System.Drawing.Size(100, 20);
-            this.txtSpec.TabIndex = 14;
+            this.txtSpec.TabIndex = 9;
             // 
             // tabPage2
             // 
@@ -453,7 +456,7 @@
             this.btnRunQuery.Location = new System.Drawing.Point(227, 145);
             this.btnRunQuery.Name = "btnRunQuery";
             this.btnRunQuery.Size = new System.Drawing.Size(90, 23);
-            this.btnRunQuery.TabIndex = 31;
+            this.btnRunQuery.TabIndex = 25;
             this.btnRunQuery.Text = "Run Query";
             this.btnRunQuery.UseVisualStyleBackColor = true;
             this.btnRunQuery.Click += new System.EventHandler(this.btnRunQuery_Click);
@@ -482,6 +485,7 @@
             this.splitContainer1.Size = new System.Drawing.Size(564, 542);
             this.splitContainer1.SplitterDistance = 200;
             this.splitContainer1.TabIndex = 13;
+            this.splitContainer1.TabStop = false;
             // 
             // lblRowCount
             // 
@@ -508,7 +512,7 @@
             this.btnCopySelection.Location = new System.Drawing.Point(195, 5);
             this.btnCopySelection.Name = "btnCopySelection";
             this.btnCopySelection.Size = new System.Drawing.Size(90, 23);
-            this.btnCopySelection.TabIndex = 29;
+            this.btnCopySelection.TabIndex = 24;
             this.btnCopySelection.Text = "Copy Selection";
             this.btnCopySelection.UseVisualStyleBackColor = true;
             this.btnCopySelection.Click += new System.EventHandler(this.btnCopySelection_Click);
@@ -518,7 +522,7 @@
             this.btnOpenInExcel.Location = new System.Drawing.Point(3, 5);
             this.btnOpenInExcel.Name = "btnOpenInExcel";
             this.btnOpenInExcel.Size = new System.Drawing.Size(90, 23);
-            this.btnOpenInExcel.TabIndex = 27;
+            this.btnOpenInExcel.TabIndex = 22;
             this.btnOpenInExcel.Text = "Open In Excel";
             this.btnOpenInExcel.UseVisualStyleBackColor = true;
             this.btnOpenInExcel.Click += new System.EventHandler(this.btnOpenInExcel_Click);
@@ -528,7 +532,7 @@
             this.btnCopyAll.Location = new System.Drawing.Point(99, 5);
             this.btnCopyAll.Name = "btnCopyAll";
             this.btnCopyAll.Size = new System.Drawing.Size(90, 23);
-            this.btnCopyAll.TabIndex = 28;
+            this.btnCopyAll.TabIndex = 23;
             this.btnCopyAll.Text = "Copy All";
             this.btnCopyAll.UseVisualStyleBackColor = true;
             this.btnCopyAll.Click += new System.EventHandler(this.btnCopyAll_Click);
@@ -555,6 +559,7 @@
             this.AcceptButton = this.btnRunOrderReport;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.btnClearOrderEntries;
             this.ClientSize = new System.Drawing.Size(564, 566);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.menuStrip1);
