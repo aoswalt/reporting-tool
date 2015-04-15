@@ -101,6 +101,38 @@ namespace VarsityReportingTool {
         // Order Page
         // ====================
 
+        // allow only numbers in text box
+        private void txtOrderNumber_KeyPress(object sender, KeyPressEventArgs e) {
+            if(!Char.IsDigit(e.KeyChar) && !Char.IsControl(e.KeyChar)) {
+                e.Handled = true;
+                System.Media.SystemSounds.Beep.Play();
+            }
+        }
+
+        // allow only numbers in text box
+        private void txtVoucher_KeyPress(object sender, KeyPressEventArgs e) {
+            if(!Char.IsDigit(e.KeyChar) && !Char.IsControl(e.KeyChar)) {
+                e.Handled = true;
+                System.Media.SystemSounds.Beep.Play();
+            }
+        }
+
+        // allow only numbers or period in text box
+        private void txtSize_KeyPress(object sender, KeyPressEventArgs e) {
+            if(!Char.IsDigit(e.KeyChar) && !Char.IsControl(e.KeyChar) && !(e.KeyChar == '.')) {
+                e.Handled = true;
+                System.Media.SystemSounds.Beep.Play();
+            }
+        }
+
+        // allow only numbers or period in text box
+        private void txtSpec_KeyPress(object sender, KeyPressEventArgs e) {
+            if(!Char.IsDigit(e.KeyChar) && !Char.IsControl(e.KeyChar) && !(e.KeyChar == '.')) {
+                e.Handled = true;
+                System.Media.SystemSounds.Beep.Play();
+            }
+        }
+
         private void btnRunOrderReport_Click(object sender, EventArgs e) {
             btnRunOrderReport.Enabled = false;
 
@@ -356,14 +388,18 @@ namespace VarsityReportingTool {
 
         private void btnCopyAll_Click(object sender, EventArgs e) {
             dataGrid.SelectAll();
+            this.dataGrid.ClipboardCopyMode = DataGridViewClipboardCopyMode.EnableAlwaysIncludeHeaderText;
             Clipboard.SetDataObject(dataGrid.GetClipboardContent(), true);
+            this.dataGrid.ClipboardCopyMode = DataGridViewClipboardCopyMode.EnableWithAutoHeaderText;
             dataGrid.ClearSelection();
 
             dataGrid.CurrentCell.Selected = true;
         }
 
         private void btnCopySelection_Click(object sender, EventArgs e) {
+            this.dataGrid.ClipboardCopyMode = DataGridViewClipboardCopyMode.EnableAlwaysIncludeHeaderText;
             Clipboard.SetDataObject(dataGrid.GetClipboardContent(), true);
+            this.dataGrid.ClipboardCopyMode = DataGridViewClipboardCopyMode.EnableWithAutoHeaderText;
         }
 
         private void btnOpenInExcel_Click(object sender, EventArgs e) {

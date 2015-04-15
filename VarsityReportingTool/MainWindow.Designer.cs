@@ -25,8 +25,6 @@
         private void InitializeComponent() {
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveReportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.openReportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.label1 = new System.Windows.Forms.Label();
@@ -94,25 +92,11 @@
             // fileToolStripMenuItem
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.saveReportToolStripMenuItem,
-            this.openReportToolStripMenuItem,
             this.toolStripSeparator1,
             this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
-            // 
-            // saveReportToolStripMenuItem
-            // 
-            this.saveReportToolStripMenuItem.Name = "saveReportToolStripMenuItem";
-            this.saveReportToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
-            this.saveReportToolStripMenuItem.Text = "Save Report";
-            // 
-            // openReportToolStripMenuItem
-            // 
-            this.openReportToolStripMenuItem.Name = "openReportToolStripMenuItem";
-            this.openReportToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
-            this.openReportToolStripMenuItem.Text = "Open Report";
             // 
             // toolStripSeparator1
             // 
@@ -372,6 +356,7 @@
             this.txtOrderNumber.Name = "txtOrderNumber";
             this.txtOrderNumber.Size = new System.Drawing.Size(100, 20);
             this.txtOrderNumber.TabIndex = 4;
+            this.txtOrderNumber.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtOrderNumber_KeyPress);
             // 
             // txtVoucher
             // 
@@ -379,6 +364,7 @@
             this.txtVoucher.Name = "txtVoucher";
             this.txtVoucher.Size = new System.Drawing.Size(100, 20);
             this.txtVoucher.TabIndex = 5;
+            this.txtVoucher.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtVoucher_KeyPress);
             // 
             // txtHouse
             // 
@@ -400,6 +386,7 @@
             this.txtSize.Name = "txtSize";
             this.txtSize.Size = new System.Drawing.Size(100, 20);
             this.txtSize.TabIndex = 8;
+            this.txtSize.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtSize_KeyPress);
             // 
             // txtSpec
             // 
@@ -407,6 +394,7 @@
             this.txtSpec.Name = "txtSpec";
             this.txtSpec.Size = new System.Drawing.Size(100, 20);
             this.txtSpec.TabIndex = 9;
+            this.txtSpec.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtSpec_KeyPress);
             // 
             // tabPage2
             // 
@@ -591,8 +579,6 @@
 
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem saveReportToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem openReportToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.Label label1;
