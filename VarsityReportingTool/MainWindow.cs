@@ -14,7 +14,7 @@ namespace VarsityReportingTool {
     public partial class MainWindow : Form {
         private static string ConnectionString = "Driver={iSeries Access ODBC Driver}; System=USC; SignOn=4;";    // using Kerberos
         private static int RowLimitAmount = 1000;
-        private enum ReportType { All, Cut_Letters, RH_TS, Sublm_Inline, Sublm_Cust };
+        private enum ReportType { All, Cut_Letters, Sew, RH_TS, Sublm_Inline, Sublm_Cust };
 
         public MainWindow() {
             InitializeComponent();
@@ -294,6 +294,17 @@ namespace VarsityReportingTool {
                     query += @"
                         (d.dclas IN ('04G')) AND 
                         (d.ditem LIKE 'IDC%') AND (d.ditem NOT LIKE 'COZ%') AND ";
+                    break;
+                case ReportType.Sew:
+                    query += @"
+                        ((d.ditem LIKE '%MN%') OR (d.ditem LIKE 'PF%') OR (d.dlrea LIKE 'ASW')) AND 
+                        ((d.ditem NOT LIKE '%CBSLIMN%') AND (d.ditem NOT LIKE '%SLIMN%')) AND 
+                        (d.dclas NOT IN ('010', '045', '04A', '04B', '04M', '04O', '065', '075', '083', '086', '087', '089', 
+                                         '0DB', '0P1', '0P2', '112', 'CS2', 'S01', 'S02', 'SSO', 'STL')) AND 
+                        ((TRIM(d.ditem) NOT LIKE 'MNB1') AND (TRIM(d.ditem) NOT LIKE 'MNB2') AND
+                         (d.ditem NOT LIKE 'MNBN%') AND (d.ditem NOT LIKE 'MNB2N%') AND 
+                         (d.ditem NOT LIKE 'MNBLN%') AND (d.ditem NOT LIKE 'MNBL2N%') AND 
+                         (d.ditem NOT LIKE 'MNSN%') AND (d.ditem NOT LIKE 'MNS2N%') AND (d.ditem NOT LIKE 'MNS3N%')) AND ";
                     break;
                 default:
                     break;
