@@ -46,6 +46,7 @@ namespace VarsityReportingTool {
                     DataTable table = new DataTable();
                     adapter.Fill(table);
 
+                    dataGrid.DataSource = null;
                     dataGrid.DataSource = table;
                 }
 
