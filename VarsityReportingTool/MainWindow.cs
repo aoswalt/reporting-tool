@@ -12,7 +12,7 @@ using Excel = Microsoft.Office.Interop.Excel;
 
 namespace VarsityReportingTool {
     public partial class MainWindow : Form {
-        private static string ConnectionString = "Driver={iSeries Access ODBC Driver}; System=USC; SignOn=4;";    // using Kerberos
+        public static string ConnectionString = "Driver={iSeries Access ODBC Driver}; System=USC; SignOn=4;";    // using Kerberos
         private static int RowLimitAmount = 1000;
         private enum ReportType { All, Cut_Letters, Sew, RH_TS, Sublm_Inline, Sublm_Cust };
 
@@ -60,8 +60,7 @@ namespace VarsityReportingTool {
                     errors += "Error " + (i + 1) + " of " + ex.Errors.Count + "\n";
                     errors += "SQLState:  " + ex.Errors[i].SQLState + "\n";    // IM002 for no driver
                     errors += "NativErr:  " + ex.Errors[i].NativeError + "\n";
-                    errors += "EMessage:  " + ex.Errors[i].Message + "\n";
-                    errors += "ESource:   " + ex.Errors[i].Source + "\n\n";
+                    errors += "Message:   " + ex.Errors[i].Message + "\n\n";
                 }
 
                 MessageBox.Show(errors, "Errors");
