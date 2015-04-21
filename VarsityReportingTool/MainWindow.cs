@@ -39,7 +39,7 @@ namespace VarsityReportingTool {
                         }
 
                         // do not run command if no parameters entered
-                        if(ParameterPrompt.PromptForParameterValues(ref command) == DialogResult.Cancel) { return; }
+                        if(ParameterPrompt.PromptForParameterValues(ref command, txtQueryPrompts.Text.Split(',')) == DialogResult.Cancel) { return; }
                     }
 
                     OdbcDataAdapter adapter = new OdbcDataAdapter(command);

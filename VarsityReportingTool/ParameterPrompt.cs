@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace VarsityReportingTool {
     public static class ParameterPrompt {
-        public static DialogResult PromptForParameterValues(ref OdbcCommand command) {
+        public static DialogResult PromptForParameterValues(ref OdbcCommand command, string[] prompts) {
             OdbcParameterCollection parameterCollection = command.Parameters;
             DialogResult result = DialogResult.Cancel;
             int parameterCount = parameterCollection.Count;
@@ -22,7 +22,9 @@ namespace VarsityReportingTool {
 
             List<TextBox> textBoxes = new List<TextBox>();
             for(int i = 0; i != parameterCount; ++i) {
-                Label label = new Label() { Left = 10, Top = 10 + 25 * i, Text = "Label " + i, Width = 50 };
+                Label label = new Label() { Left = 10, Top = 10 + 25 * i, 
+                                            Text = ((i < prompts.Length && prompts[i].Trim() != "") ? prompts[i].Trim() : ("Label " + i)), 
+                                            Width = 50 };
                 TextBox textBox = new TextBox() { Left = 10 + label.Width + 1, Top = 8 + 25 * i, Width = 100 };
                 textBoxes.Add(textBox);
 

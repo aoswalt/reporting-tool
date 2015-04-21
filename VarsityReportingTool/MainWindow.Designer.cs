@@ -66,6 +66,8 @@
             this.btnOpenInExcel = new System.Windows.Forms.Button();
             this.btnCopyAll = new System.Windows.Forms.Button();
             this.dataGrid = new System.Windows.Forms.DataGridView();
+            this.label5 = new System.Windows.Forms.Label();
+            this.txtQueryPrompts = new System.Windows.Forms.TextBox();
             this.menuStrip1.SuspendLayout();
             this.reportTabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -399,6 +401,8 @@
             // tabPage2
             // 
             this.tabPage2.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPage2.Controls.Add(this.txtQueryPrompts);
+            this.tabPage2.Controls.Add(this.label5);
             this.tabPage2.Controls.Add(this.chkQueryLimitRows);
             this.tabPage2.Controls.Add(this.txtQuery);
             this.tabPage2.Controls.Add(this.btnRunQuery);
@@ -432,7 +436,7 @@
             this.txtQuery.Location = new System.Drawing.Point(0, 0);
             this.txtQuery.Name = "txtQuery";
             this.txtQuery.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this.txtQuery.Size = new System.Drawing.Size(556, 139);
+            this.txtQuery.Size = new System.Drawing.Size(556, 113);
             this.txtQuery.TabIndex = 32;
             this.txtQuery.Text = "";
             // 
@@ -540,6 +544,25 @@
             this.dataGrid.Size = new System.Drawing.Size(556, 298);
             this.dataGrid.TabIndex = 0;
             // 
+            // label5
+            // 
+            this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(-3, 122);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(48, 13);
+            this.label5.TabIndex = 34;
+            this.label5.Text = "Prompts:";
+            // 
+            // txtQueryPrompts
+            // 
+            this.txtQueryPrompts.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtQueryPrompts.Location = new System.Drawing.Point(43, 119);
+            this.txtQueryPrompts.Name = "txtQueryPrompts";
+            this.txtQueryPrompts.Size = new System.Drawing.Size(513, 20);
+            this.txtQueryPrompts.TabIndex = 35;
+            // 
             // MainWindow
             // 
             this.AcceptButton = this.btnRunOrderReport;
@@ -618,6 +641,8 @@
         private System.Windows.Forms.Label lblRowCount;
         private System.Windows.Forms.ComboBox comboboxReportType;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox txtQueryPrompts;
+        private System.Windows.Forms.Label label5;
     }
 }
 
