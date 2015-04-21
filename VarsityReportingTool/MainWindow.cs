@@ -390,14 +390,6 @@ namespace VarsityReportingTool {
         // Data Grid
         // ====================
 
-        // allow ctrl-A to select all
-        private void txtQuery_KeyDown(object sender, KeyEventArgs e) {
-            if(e.Control && e.KeyCode == Keys.A) {
-                txtQuery.SelectAll();
-                e.Handled = true;
-            }
-        }
-
         private void btnCopyAll_Click(object sender, EventArgs e) {
             dataGrid.SelectAll();
             this.dataGrid.ClipboardCopyMode = DataGridViewClipboardCopyMode.EnableAlwaysIncludeHeaderText;

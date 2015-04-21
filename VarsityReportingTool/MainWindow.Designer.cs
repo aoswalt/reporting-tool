@@ -57,7 +57,7 @@
             this.txtSpec = new System.Windows.Forms.TextBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.chkQueryLimitRows = new System.Windows.Forms.CheckBox();
-            this.txtQuery = new System.Windows.Forms.TextBox();
+            this.txtQuery = new System.Windows.Forms.RichTextBox();
             this.btnRunQuery = new System.Windows.Forms.Button();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.lblRowCount = new System.Windows.Forms.Label();
@@ -101,12 +101,12 @@
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(138, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(89, 6);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(92, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -424,19 +424,17 @@
             // 
             // txtQuery
             // 
-            this.txtQuery.AcceptsReturn = true;
             this.txtQuery.AcceptsTab = true;
             this.txtQuery.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtQuery.Font = new System.Drawing.Font("Consolas", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtQuery.Location = new System.Drawing.Point(0, 0);
-            this.txtQuery.Multiline = true;
             this.txtQuery.Name = "txtQuery";
-            this.txtQuery.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txtQuery.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
             this.txtQuery.Size = new System.Drawing.Size(556, 139);
             this.txtQuery.TabIndex = 32;
-            this.txtQuery.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtQuery_KeyDown);
+            this.txtQuery.Text = "";
             // 
             // btnRunQuery
             // 
@@ -614,7 +612,7 @@
         private System.Windows.Forms.Button btnOpenInExcel;
         private System.Windows.Forms.Button btnCopyAll;
         private System.Windows.Forms.Button btnRunQuery;
-        private System.Windows.Forms.TextBox txtQuery;
+        private System.Windows.Forms.RichTextBox txtQuery;
         private System.Windows.Forms.CheckBox chkOrderLimitRows;
         private System.Windows.Forms.CheckBox chkQueryLimitRows;
         private System.Windows.Forms.Label lblRowCount;
