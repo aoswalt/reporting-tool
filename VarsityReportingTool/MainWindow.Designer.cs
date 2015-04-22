@@ -56,9 +56,16 @@
             this.txtSize = new System.Windows.Forms.TextBox();
             this.txtSpec = new System.Windows.Forms.TextBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.txtQueryPrompts = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
             this.chkQueryLimitRows = new System.Windows.Forms.CheckBox();
             this.txtQuery = new System.Windows.Forms.RichTextBox();
             this.btnRunQuery = new System.Windows.Forms.Button();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.chkCustomLimitRows = new System.Windows.Forms.CheckBox();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.btnRunCustomReport = new System.Windows.Forms.Button();
+            this.btnClearCustomEntries = new System.Windows.Forms.Button();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.lblRowCount = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
@@ -66,19 +73,28 @@
             this.btnOpenInExcel = new System.Windows.Forms.Button();
             this.btnCopyAll = new System.Windows.Forms.Button();
             this.dataGrid = new System.Windows.Forms.DataGridView();
-            this.label5 = new System.Windows.Forms.Label();
-            this.txtQueryPrompts = new System.Windows.Forms.TextBox();
+            this.panel5 = new System.Windows.Forms.Panel();
+            this.label14 = new System.Windows.Forms.Label();
+            this.button3 = new System.Windows.Forms.Button();
+            this.button4 = new System.Windows.Forms.Button();
+            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.comboBox2 = new System.Windows.Forms.ComboBox();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.cutomReportColumnsFlowPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.menuStrip1.SuspendLayout();
             this.reportTabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.tabPage2.SuspendLayout();
+            this.tabPage3.SuspendLayout();
+            this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGrid)).BeginInit();
+            this.panel5.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -209,6 +225,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.reportTabControl.Controls.Add(this.tabPage1);
             this.reportTabControl.Controls.Add(this.tabPage2);
+            this.reportTabControl.Controls.Add(this.tabPage3);
             this.reportTabControl.Location = new System.Drawing.Point(0, 0);
             this.reportTabControl.Name = "reportTabControl";
             this.reportTabControl.SelectedIndex = 0;
@@ -413,6 +430,25 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Query";
             // 
+            // txtQueryPrompts
+            // 
+            this.txtQueryPrompts.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtQueryPrompts.Location = new System.Drawing.Point(43, 119);
+            this.txtQueryPrompts.Name = "txtQueryPrompts";
+            this.txtQueryPrompts.Size = new System.Drawing.Size(513, 20);
+            this.txtQueryPrompts.TabIndex = 35;
+            // 
+            // label5
+            // 
+            this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(-3, 122);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(48, 13);
+            this.label5.TabIndex = 34;
+            this.label5.Text = "Prompts:";
+            // 
             // chkQueryLimitRows
             // 
             this.chkQueryLimitRows.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -450,6 +486,63 @@
             this.btnRunQuery.Text = "Run Query";
             this.btnRunQuery.UseVisualStyleBackColor = true;
             this.btnRunQuery.Click += new System.EventHandler(this.btnRunQuery_Click);
+            // 
+            // tabPage3
+            // 
+            this.tabPage3.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPage3.Controls.Add(this.panel5);
+            this.tabPage3.Controls.Add(this.chkCustomLimitRows);
+            this.tabPage3.Controls.Add(this.cutomReportColumnsFlowPanel);
+            this.tabPage3.Controls.Add(this.panel3);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Size = new System.Drawing.Size(556, 171);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "Custom";
+            // 
+            // chkCustomLimitRows
+            // 
+            this.chkCustomLimitRows.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.chkCustomLimitRows.AutoSize = true;
+            this.chkCustomLimitRows.Checked = true;
+            this.chkCustomLimitRows.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkCustomLimitRows.Location = new System.Drawing.Point(8, 149);
+            this.chkCustomLimitRows.Name = "chkCustomLimitRows";
+            this.chkCustomLimitRows.Size = new System.Drawing.Size(120, 17);
+            this.chkCustomLimitRows.TabIndex = 30;
+            this.chkCustomLimitRows.Text = "Limit To 1000 Rows";
+            this.chkCustomLimitRows.UseVisualStyleBackColor = true;
+            // 
+            // panel3
+            // 
+            this.panel3.Controls.Add(this.btnRunCustomReport);
+            this.panel3.Controls.Add(this.btnClearCustomEntries);
+            this.panel3.Location = new System.Drawing.Point(171, 140);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(203, 31);
+            this.panel3.TabIndex = 31;
+            // 
+            // btnRunCustomReport
+            // 
+            this.btnRunCustomReport.Location = new System.Drawing.Point(3, 5);
+            this.btnRunCustomReport.Name = "btnRunCustomReport";
+            this.btnRunCustomReport.Size = new System.Drawing.Size(90, 23);
+            this.btnRunCustomReport.TabIndex = 20;
+            this.btnRunCustomReport.Text = "Run Report";
+            this.btnRunCustomReport.UseVisualStyleBackColor = true;
+            this.btnRunCustomReport.Click += new System.EventHandler(this.btnRunCustomReport_Click);
+            // 
+            // btnClearCustomEntries
+            // 
+            this.btnClearCustomEntries.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnClearCustomEntries.Location = new System.Drawing.Point(109, 5);
+            this.btnClearCustomEntries.Name = "btnClearCustomEntries";
+            this.btnClearCustomEntries.Size = new System.Drawing.Size(90, 23);
+            this.btnClearCustomEntries.TabIndex = 21;
+            this.btnClearCustomEntries.Text = "Clear Entries";
+            this.btnClearCustomEntries.UseVisualStyleBackColor = true;
+            this.btnClearCustomEntries.Click += new System.EventHandler(this.btnClearCustomEntries_Click);
             // 
             // splitContainer1
             // 
@@ -544,24 +637,87 @@
             this.dataGrid.Size = new System.Drawing.Size(556, 298);
             this.dataGrid.TabIndex = 0;
             // 
-            // label5
+            // panel5
             // 
-            this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(-3, 122);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(48, 13);
-            this.label5.TabIndex = 34;
-            this.label5.Text = "Prompts:";
+            this.panel5.Controls.Add(this.comboBox1);
+            this.panel5.Controls.Add(this.label14);
+            this.panel5.Controls.Add(this.button3);
+            this.panel5.Controls.Add(this.button4);
+            this.panel5.Controls.Add(this.textBox2);
+            this.panel5.Controls.Add(this.comboBox2);
+            this.panel5.Location = new System.Drawing.Point(40, 60);
+            this.panel5.Name = "panel5";
+            this.panel5.Size = new System.Drawing.Size(380, 28);
+            this.panel5.TabIndex = 35;
             // 
-            // txtQueryPrompts
+            // label14
             // 
-            this.txtQueryPrompts.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtQueryPrompts.Location = new System.Drawing.Point(43, 119);
-            this.txtQueryPrompts.Name = "txtQueryPrompts";
-            this.txtQueryPrompts.Size = new System.Drawing.Size(513, 20);
-            this.txtQueryPrompts.TabIndex = 35;
+            this.label14.BackColor = System.Drawing.Color.White;
+            this.label14.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.label14.ForeColor = System.Drawing.Color.Black;
+            this.label14.Location = new System.Drawing.Point(2, 7);
+            this.label14.Margin = new System.Windows.Forms.Padding(0);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(21, 15);
+            this.label14.TabIndex = 33;
+            this.label14.Text = "00";
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(353, 3);
+            this.button3.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(23, 23);
+            this.button3.TabIndex = 34;
+            this.button3.Text = "▼";
+            this.button3.UseVisualStyleBackColor = true;
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(330, 3);
+            this.button4.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(23, 23);
+            this.button4.TabIndex = 33;
+            this.button4.Text = "▲";
+            this.button4.UseVisualStyleBackColor = true;
+            // 
+            // textBox2
+            // 
+            this.textBox2.Location = new System.Drawing.Point(206, 5);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(118, 20);
+            this.textBox2.TabIndex = 2;
+            // 
+            // comboBox2
+            // 
+            this.comboBox2.FormattingEnabled = true;
+            this.comboBox2.Location = new System.Drawing.Point(25, 4);
+            this.comboBox2.Name = "comboBox2";
+            this.comboBox2.Size = new System.Drawing.Size(95, 21);
+            this.comboBox2.TabIndex = 1;
+            this.comboBox2.Text = "Sch Date Start";
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(126, 4);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(74, 21);
+            this.comboBox1.TabIndex = 35;
+            this.comboBox1.Text = "NOT LIKE";
+            // 
+            // cutomReportColumnsFlowPanel
+            // 
+            this.cutomReportColumnsFlowPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.cutomReportColumnsFlowPanel.AutoScroll = true;
+            this.cutomReportColumnsFlowPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.cutomReportColumnsFlowPanel.Location = new System.Drawing.Point(151, 0);
+            this.cutomReportColumnsFlowPanel.Name = "cutomReportColumnsFlowPanel";
+            this.cutomReportColumnsFlowPanel.Size = new System.Drawing.Size(405, 139);
+            this.cutomReportColumnsFlowPanel.TabIndex = 0;
+            this.cutomReportColumnsFlowPanel.WrapContents = false;
             // 
             // MainWindow
             // 
@@ -584,6 +740,9 @@
             this.panel1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
+            this.tabPage3.ResumeLayout(false);
+            this.tabPage3.PerformLayout();
+            this.panel3.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             this.splitContainer1.Panel2.PerformLayout();
@@ -591,6 +750,8 @@
             this.splitContainer1.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGrid)).EndInit();
+            this.panel5.ResumeLayout(false);
+            this.panel5.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -643,6 +804,19 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox txtQueryPrompts;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.CheckBox chkCustomLimitRows;
+        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.Button btnRunCustomReport;
+        private System.Windows.Forms.Button btnClearCustomEntries;
+        private System.Windows.Forms.Panel panel5;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.ComboBox comboBox2;
+        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.FlowLayoutPanel cutomReportColumnsFlowPanel;
     }
 }
 

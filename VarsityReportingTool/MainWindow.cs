@@ -386,6 +386,19 @@ namespace VarsityReportingTool {
 
 
         // ====================
+        // Custom Page
+        // ====================
+
+        private void btnRunCustomReport_Click(object sender, EventArgs e) {
+
+        }
+
+        private void btnClearCustomEntries_Click(object sender, EventArgs e) {
+
+        }
+
+
+        // ====================
         // Data Grid
         // ====================
 
@@ -433,5 +446,65 @@ namespace VarsityReportingTool {
 
             btnOpenInExcel.Enabled = true;
         }
+
+        /*
+            // 
+            // label14
+            // 
+            this.label14.BackColor = System.Drawing.Color.White;
+            this.label14.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.label14.ForeColor = System.Drawing.Color.Black;
+            this.label14.Location = new System.Drawing.Point(2, 7);
+            this.label14.Margin = new System.Windows.Forms.Padding(0);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(21, 15);
+            this.label14.TabIndex = 33;
+            this.label14.Text = "00";
+            // 
+            // comboBox2
+            // 
+            this.comboBox2.FormattingEnabled = true;
+            this.comboBox2.Location = new System.Drawing.Point(25, 4);
+            this.comboBox2.Name = "comboBox2";
+            this.comboBox2.Size = new System.Drawing.Size(95, 21);
+            this.comboBox2.TabIndex = 1;
+            this.comboBox2.Text = "Sch Date Start";
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(126, 4);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(74, 21);
+            this.comboBox1.TabIndex = 35;
+            this.comboBox1.Text = "NOT LIKE";
+            // 
+            // textBox2
+            // 
+            this.textBox2.Location = new System.Drawing.Point(206, 5);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(118, 20);
+            this.textBox2.TabIndex = 2;
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(353, 3);
+            this.button3.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(23, 23);
+            this.button3.TabIndex = 34;
+            this.button3.Text = "▼";
+            this.button3.UseVisualStyleBackColor = true;
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(330, 3);
+            this.button4.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(23, 23);
+            this.button4.TabIndex = 33;
+            this.button4.Text = "▲";
+            this.button4.UseVisualStyleBackColor = true;
+         */
     }
 }
