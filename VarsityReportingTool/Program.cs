@@ -40,9 +40,9 @@ namespace VarsityReportingTool {
 
                     MessageBox.Show(errors, "Errors");
                 }
-            } catch(Exception ex) {
+            } /*catch(Exception ex) {
                 MessageBox.Show("Exception: " + ex.Message, "Unhandled Exception");
-            }
+            }*/
         }
     }
 }
