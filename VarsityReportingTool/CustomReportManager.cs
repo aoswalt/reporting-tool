@@ -39,12 +39,24 @@ namespace VarsityReportingTool {
         }
 
         public void AddColumn() {
-            customReportColumns.Add(new Column(ref availableColumnHeaders, customReportColumns.Count));
-            columnsPanel.Controls.Add(customReportColumns[customReportColumns.Count - 1].getPanel());
+            customReportColumns.Add(new Column(this, customReportColumns.Count));
+            columnsPanel.Controls.Add(customReportColumns.Last().getPanel());
+            updateColumns();
         }
 
         public void RemoveColumn() {
 
+        }
+
+        public void updateColumns() {
+            int count = this.customReportColumns.Count;
+            for(int i = 0; i != count; ++i) {
+                Column column = this.customReportColumns[i];
+                int columnIndexInPanel = this.columnsPanel.Controls.GetChildIndex(column.getPanel());
+                column.setId(columnIndexInPanel + 1);
+                column.setUpButtonEnabled(columnIndexInPanel > 0);
+                column.setDownButtonEnabled(columnIndexInPanel < (count - 1));
+            }
         }
 
         private class HeaderInfoAttribute : Attribute {
@@ -66,6 +78,7 @@ namespace VarsityReportingTool {
         }
 
         private class Column {
+            private CustomReportManager manager;
             private Header header;
             private FlowLayoutPanel panel;
             private Label label;
@@ -75,7 +88,9 @@ namespace VarsityReportingTool {
             private Button moveUpButton;
             private Button moveDownButton;
 
-            public Column(ref List<Header> availableColumnHeaders, int id) {
+            public Column(CustomReportManager manager, int id) {
+                this.manager = manager;
+
                 // containing panel
                 this.panel = new FlowLayoutPanel();
                 this.panel.Size = new System.Drawing.Size(380, 28);
@@ -121,6 +136,7 @@ namespace VarsityReportingTool {
                 this.moveUpButton.Text = "▲";
                 this.moveUpButton.UseVisualStyleBackColor = true;
                 this.moveUpButton.Click += new System.EventHandler(moveUpButton_Click);
+                this.moveUpButton.Enabled = (id > 0);
                 this.panel.Controls.Add(this.moveUpButton);
 
                 // move down button
@@ -130,11 +146,24 @@ namespace VarsityReportingTool {
                 this.moveDownButton.Text = "▼";
                 this.moveDownButton.UseVisualStyleBackColor = true;
                 this.moveDownButton.Click += new System.EventHandler(moveDownButton_Click);
+                this.moveDownButton.Enabled = false;
                 this.panel.Controls.Add(this.moveDownButton);
             }
 
             public FlowLayoutPanel getPanel() {
                 return panel;
+            }
+
+            public void setId(int id) {
+                label.Text = id.ToString();
+            }
+
+            public void setUpButtonEnabled(bool value) {
+                moveUpButton.Enabled = value;
+            }
+
+            public void setDownButtonEnabled(bool value) {
+                moveDownButton.Enabled = value;
             }
 
             private void headerComboBox_SelectedIndexChanged(object sender, EventArgs e) {
@@ -207,11 +236,13 @@ namespace VarsityReportingTool {
             }
 
             private void moveUpButton_Click(object sender, EventArgs e) {
-
+                this.panel.Parent.Controls.SetChildIndex(this.panel, this.panel.Parent.Controls.GetChildIndex(this.panel) - 1);
+                manager.updateColumns();
             }
 
             private void moveDownButton_Click(object sender, EventArgs e) {
-
+                this.panel.Parent.Controls.SetChildIndex(this.panel, this.panel.Parent.Controls.GetChildIndex(this.panel) + 1);
+                manager.updateColumns();
             }
         }
     }
