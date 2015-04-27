@@ -400,7 +400,17 @@ namespace VarsityReportingTool {
         }
 
         private void btnRunCustomReport_Click(object sender, EventArgs e) {
+            btnRunQuery.Enabled = false;
 
+            string query = customReports.GenerateQuery();
+
+            if(chkCustomLimitRows.Checked) {
+                query += String.Format(@" FETCH FIRST {0} ROWS ONLY", RowLimitAmount);
+            }
+
+            runQuery(query);
+
+            btnRunQuery.Enabled = true;
         }
 
         private void btnClearCustomEntries_Click(object sender, EventArgs e) {

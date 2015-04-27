@@ -105,14 +105,53 @@ namespace VarsityReportingTool {
             UpdateColumns();
         }
 
+        public string GenerateQuery() {
+            List<Header> includedHeaders = new List<Header>();
+            string columns = "";
+            string innerColumns = "";
+            string where = "";
+
+            foreach(Column column in customReportColumns) {
+                switch(column.header) {
+                    case Header.HOUSE: 
+                        if(!includedHeaders.Contains(column.header)) {
+                            columns += "det.dhous ";
+                            innerColumns += "d.dhous ";
+                            includedHeaders.Add(column.header);
+                        }
+
+                        if(column.entryField.Text != "") {
+                            if(where == "") where += "WHERE ";
+                            where += "d.dhous " + EnumExtensions.GetAttribute<CompareInfoAttribute>(EnumExtensions.GetCompareEnumFromString<StringCompare>((string)column.comparisonComboBox.SelectedValue)).QueryValue +
+                                      " " + column.entryField.Text + " ";
+                        }
+                        break;
+                    case Header.SCHDATE:
+                        break;
+                    case Header.SIZE:
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            string query = String.Format("SELECT {0} FROM ( SELECT {1} FROM VARSITYF.DETAIL AS d {2} ) AS det", columns, innerColumns, where);
+
+            //query += where;
+
+            // default sort by style code
+            //query += " ORDER BY det.ditem";
+            return query;
+        }
+
         private class Column {
+            public Header header;
+            public ComboBox comparisonComboBox;
+            public Control entryField;
             private CustomReportManager manager;
-            private Header header;
             private FlowLayoutPanel panel;
             private Label label;
             private ComboBox headerComboBox;
-            private ComboBox comparisonComboBox;
-            private Control entryField;
             private Button moveUpButton;
             private Button moveDownButton;
             private bool selected;
