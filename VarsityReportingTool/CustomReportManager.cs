@@ -69,6 +69,7 @@ namespace VarsityReportingTool {
                 customReportColumns.Remove(selectedColumn);
                 columnsPanel.Controls.Remove(selectedColumn.getPanel());
                 selectedColumn = null;
+                ((Button)this.columnsPanel.Parent.Controls["btnRemoveColumn"]).Enabled = false;
             }
             UpdateColumns();
         }
@@ -86,9 +87,21 @@ namespace VarsityReportingTool {
         }
 
         private void SelectColumn(Column column) {
-            if(selectedColumn != null) selectedColumn.setSelected(false);
-            selectedColumn = column;
-            selectedColumn.setSelected(true);
+            if(selectedColumn != null) {
+                selectedColumn.setSelected(false);
+                if(column != selectedColumn) {
+                    selectedColumn = column;
+                    selectedColumn.setSelected(true);
+                    ((Button)this.columnsPanel.Parent.Controls["btnRemoveColumn"]).Enabled = true;
+                } else {
+                    selectedColumn = null;
+                    ((Button)this.columnsPanel.Parent.Controls["btnRemoveColumn"]).Enabled = false;
+                }
+            } else {
+                selectedColumn = column;
+                selectedColumn.setSelected(true);
+                ((Button)this.columnsPanel.Parent.Controls["btnRemoveColumn"]).Enabled = true;
+            }
             UpdateColumns();
         }
 

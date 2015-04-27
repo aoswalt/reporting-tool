@@ -84,19 +84,19 @@
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
+            this.label16 = new System.Windows.Forms.Label();
+            this.comboBox7 = new System.Windows.Forms.ComboBox();
+            this.comboBox8 = new System.Windows.Forms.ComboBox();
+            this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
+            this.button7 = new System.Windows.Forms.Button();
+            this.button8 = new System.Windows.Forms.Button();
             this.lblRowCount = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.btnCopySelection = new System.Windows.Forms.Button();
             this.btnOpenInExcel = new System.Windows.Forms.Button();
             this.btnCopyAll = new System.Windows.Forms.Button();
             this.dataGrid = new System.Windows.Forms.DataGridView();
-            this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
-            this.label16 = new System.Windows.Forms.Label();
-            this.comboBox7 = new System.Windows.Forms.ComboBox();
-            this.comboBox8 = new System.Windows.Forms.ComboBox();
-            this.button7 = new System.Windows.Forms.Button();
-            this.button8 = new System.Windows.Forms.Button();
-            this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
             this.menuStrip1.SuspendLayout();
             this.reportTabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -110,9 +110,9 @@
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            this.flowLayoutPanel2.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGrid)).BeginInit();
-            this.flowLayoutPanel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -522,6 +522,7 @@
             // 
             // btnRemoveColumn
             // 
+            this.btnRemoveColumn.Enabled = false;
             this.btnRemoveColumn.Location = new System.Drawing.Point(11, 31);
             this.btnRemoveColumn.Name = "btnRemoveColumn";
             this.btnRemoveColumn.Size = new System.Drawing.Size(75, 23);
@@ -766,6 +767,80 @@
             this.splitContainer1.TabIndex = 13;
             this.splitContainer1.TabStop = false;
             // 
+            // flowLayoutPanel2
+            // 
+            this.flowLayoutPanel2.Controls.Add(this.label16);
+            this.flowLayoutPanel2.Controls.Add(this.comboBox7);
+            this.flowLayoutPanel2.Controls.Add(this.comboBox8);
+            this.flowLayoutPanel2.Controls.Add(this.dateTimePicker2);
+            this.flowLayoutPanel2.Controls.Add(this.button7);
+            this.flowLayoutPanel2.Controls.Add(this.button8);
+            this.flowLayoutPanel2.Location = new System.Drawing.Point(89, 175);
+            this.flowLayoutPanel2.Name = "flowLayoutPanel2";
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(380, 28);
+            this.flowLayoutPanel2.TabIndex = 40;
+            this.flowLayoutPanel2.WrapContents = false;
+            // 
+            // label16
+            // 
+            this.label16.BackColor = System.Drawing.Color.White;
+            this.label16.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.label16.ForeColor = System.Drawing.Color.Black;
+            this.label16.Location = new System.Drawing.Point(3, 6);
+            this.label16.Margin = new System.Windows.Forms.Padding(3, 6, 0, 3);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(21, 15);
+            this.label16.TabIndex = 34;
+            this.label16.Text = "00";
+            // 
+            // comboBox7
+            // 
+            this.comboBox7.FormattingEnabled = true;
+            this.comboBox7.Location = new System.Drawing.Point(27, 3);
+            this.comboBox7.Name = "comboBox7";
+            this.comboBox7.Size = new System.Drawing.Size(95, 21);
+            this.comboBox7.TabIndex = 35;
+            this.comboBox7.Text = "Sch Date Start";
+            // 
+            // comboBox8
+            // 
+            this.comboBox8.FormattingEnabled = true;
+            this.comboBox8.Location = new System.Drawing.Point(128, 3);
+            this.comboBox8.Name = "comboBox8";
+            this.comboBox8.Size = new System.Drawing.Size(74, 21);
+            this.comboBox8.TabIndex = 36;
+            this.comboBox8.Text = "NOT LIKE";
+            // 
+            // dateTimePicker2
+            // 
+            this.dateTimePicker2.Checked = false;
+            this.dateTimePicker2.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dateTimePicker2.Location = new System.Drawing.Point(208, 3);
+            this.dateTimePicker2.Name = "dateTimePicker2";
+            this.dateTimePicker2.ShowCheckBox = true;
+            this.dateTimePicker2.Size = new System.Drawing.Size(118, 20);
+            this.dateTimePicker2.TabIndex = 40;
+            // 
+            // button7
+            // 
+            this.button7.Location = new System.Drawing.Point(332, 3);
+            this.button7.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(23, 23);
+            this.button7.TabIndex = 38;
+            this.button7.Text = "▲";
+            this.button7.UseVisualStyleBackColor = true;
+            // 
+            // button8
+            // 
+            this.button8.Location = new System.Drawing.Point(355, 3);
+            this.button8.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
+            this.button8.Name = "button8";
+            this.button8.Size = new System.Drawing.Size(23, 23);
+            this.button8.TabIndex = 39;
+            this.button8.Text = "▼";
+            this.button8.UseVisualStyleBackColor = true;
+            // 
             // lblRowCount
             // 
             this.lblRowCount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -833,80 +908,6 @@
             this.dataGrid.Size = new System.Drawing.Size(556, 298);
             this.dataGrid.TabIndex = 0;
             // 
-            // flowLayoutPanel2
-            // 
-            this.flowLayoutPanel2.Controls.Add(this.label16);
-            this.flowLayoutPanel2.Controls.Add(this.comboBox7);
-            this.flowLayoutPanel2.Controls.Add(this.comboBox8);
-            this.flowLayoutPanel2.Controls.Add(this.dateTimePicker2);
-            this.flowLayoutPanel2.Controls.Add(this.button7);
-            this.flowLayoutPanel2.Controls.Add(this.button8);
-            this.flowLayoutPanel2.Location = new System.Drawing.Point(89, 175);
-            this.flowLayoutPanel2.Name = "flowLayoutPanel2";
-            this.flowLayoutPanel2.Size = new System.Drawing.Size(380, 28);
-            this.flowLayoutPanel2.TabIndex = 40;
-            this.flowLayoutPanel2.WrapContents = false;
-            // 
-            // label16
-            // 
-            this.label16.BackColor = System.Drawing.Color.White;
-            this.label16.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label16.ForeColor = System.Drawing.Color.Black;
-            this.label16.Location = new System.Drawing.Point(3, 6);
-            this.label16.Margin = new System.Windows.Forms.Padding(3, 6, 0, 3);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(21, 15);
-            this.label16.TabIndex = 34;
-            this.label16.Text = "00";
-            // 
-            // comboBox7
-            // 
-            this.comboBox7.FormattingEnabled = true;
-            this.comboBox7.Location = new System.Drawing.Point(27, 3);
-            this.comboBox7.Name = "comboBox7";
-            this.comboBox7.Size = new System.Drawing.Size(95, 21);
-            this.comboBox7.TabIndex = 35;
-            this.comboBox7.Text = "Sch Date Start";
-            // 
-            // comboBox8
-            // 
-            this.comboBox8.FormattingEnabled = true;
-            this.comboBox8.Location = new System.Drawing.Point(128, 3);
-            this.comboBox8.Name = "comboBox8";
-            this.comboBox8.Size = new System.Drawing.Size(74, 21);
-            this.comboBox8.TabIndex = 36;
-            this.comboBox8.Text = "NOT LIKE";
-            // 
-            // button7
-            // 
-            this.button7.Location = new System.Drawing.Point(332, 3);
-            this.button7.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(23, 23);
-            this.button7.TabIndex = 38;
-            this.button7.Text = "▲";
-            this.button7.UseVisualStyleBackColor = true;
-            // 
-            // button8
-            // 
-            this.button8.Location = new System.Drawing.Point(355, 3);
-            this.button8.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(23, 23);
-            this.button8.TabIndex = 39;
-            this.button8.Text = "▼";
-            this.button8.UseVisualStyleBackColor = true;
-            // 
-            // dateTimePicker2
-            // 
-            this.dateTimePicker2.Checked = false;
-            this.dateTimePicker2.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dateTimePicker2.Location = new System.Drawing.Point(208, 3);
-            this.dateTimePicker2.Name = "dateTimePicker2";
-            this.dateTimePicker2.ShowCheckBox = true;
-            this.dateTimePicker2.Size = new System.Drawing.Size(118, 20);
-            this.dateTimePicker2.TabIndex = 40;
-            // 
             // MainWindow
             // 
             this.AcceptButton = this.btnRunOrderReport;
@@ -940,9 +941,9 @@
             this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            this.flowLayoutPanel2.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGrid)).EndInit();
-            this.flowLayoutPanel2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
