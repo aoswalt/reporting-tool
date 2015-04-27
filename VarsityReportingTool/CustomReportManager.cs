@@ -7,49 +7,26 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace VarsityReportingTool {
-    public enum HeaderType { String, Integer, Decimal, Date }
-    public enum Header {
-        [HeaderInfo(HeaderType.String, "Cut House")]    HOUSE,
-        [HeaderInfo(HeaderType.Date, "Sch Date")]       SCHDATE,
-        [HeaderInfo(HeaderType.Decimal, "Size")]        SIZE
-    }
-    public enum StringCompare {
-        [CompareInfo("LIKE")]       LIKE,
-        [CompareInfo("NOT LIKE")]   NOTLIKE,
-        [CompareInfo("IN")]         IN,
-        [CompareInfo("NOT IN")]     NOTIN
-    }
-    public enum NumberCompare {
-        [CompareInfo("=")]      EQUALS,
-        [CompareInfo("<>")]     NOTEQUALS,
-        [CompareInfo(">")]      GREATER,
-        [CompareInfo(">=")]     GREATEREQUALS,
-        [CompareInfo("<")]      LESS,
-        [CompareInfo("<=")]     LESSEQUALS,
-        [CompareInfo("IN")]     IN,
-        [CompareInfo("NOT IN")] NOTIN
-    }
-
-    class HeaderInfoAttribute : Attribute {
-        public HeaderInfoAttribute(HeaderType type, string label) {
-            this.Type = type;
-            this.Label = label;
-        }
-
-        public HeaderType Type { get; private set; }
-        public string Label { get; private set; }
-    }
-
-    class CompareInfoAttribute : Attribute {
-        public CompareInfoAttribute(string queryValue) {
-            this.QueryValue = queryValue;
-        }
-
-        public string QueryValue { get; private set; }
-    }
-
     class CustomReportManager {
-        private List<Header> availableColumnHeaders = new List<Header>(Enum.GetValues(typeof(Header)).Cast<Header>());
+        private enum HeaderType { String, Integer, Decimal, Date }
+        private enum HeaderId { HOUSE, SCHDATE, SIZE }
+        private static Dictionary<HeaderId, ColumnHeader> headers = new Dictionary<HeaderId, ColumnHeader>();
+        private static List<string> stringComparisons = new List<string>(new string[] { "LIKE", "NOT LIKE", "IN", "NOT IN" });
+        private static List<string> numberComparisons = new List<string>(new string[] { "=", "<>", ">", ">=", "<", "<=", "IN", "NOT IN" });
+        private static List<string> dateComparisons = new List<string>(new string[] { "=", "<>", ">", ">=", "<", "<=" });
+        private static Dictionary<HeaderType, List<string>> comparisons = new Dictionary<HeaderType, List<string>>();
+
+        static CustomReportManager() {
+            headers.Add(HeaderId.HOUSE, new ColumnHeader(HeaderId.HOUSE, "House", HeaderType.String));
+            headers.Add(HeaderId.SCHDATE, new ColumnHeader(HeaderId.SCHDATE, "Sch Date", HeaderType.Date));
+            headers.Add(HeaderId.SIZE, new ColumnHeader(HeaderId.SIZE, "Size", HeaderType.Decimal));
+
+            comparisons.Add(HeaderType.Date, dateComparisons);
+            comparisons.Add(HeaderType.Decimal, numberComparisons);
+            comparisons.Add(HeaderType.Integer, numberComparisons);
+            comparisons.Add(HeaderType.String, stringComparisons);
+        }
+
         private FlowLayoutPanel columnsPanel;
         private List<Column> customReportColumns = new List<Column>();
         private Column selectedColumn;
@@ -106,29 +83,28 @@ namespace VarsityReportingTool {
         }
 
         public string GenerateQuery() {
-            List<Header> includedHeaders = new List<Header>();
+            List<HeaderId> includedHeaders = new List<HeaderId>();
             string columns = "";
             string innerColumns = "";
             string where = "";
 
             foreach(Column column in customReportColumns) {
-                switch(column.header) {
-                    case Header.HOUSE: 
-                        if(!includedHeaders.Contains(column.header)) {
+                switch(column.headerId) {
+                    case HeaderId.HOUSE: 
+                        if(!includedHeaders.Contains(column.headerId)) {
                             columns += "det.dhous ";
                             innerColumns += "d.dhous ";
-                            includedHeaders.Add(column.header);
+                            includedHeaders.Add(column.headerId);
                         }
 
                         if(column.entryField.Text != "") {
                             if(where == "") where += "WHERE ";
-                            where += "d.dhous " + EnumExtensions.GetAttribute<CompareInfoAttribute>(EnumExtensions.GetCompareEnumFromString<StringCompare>((string)column.comparisonComboBox.SelectedValue)).QueryValue +
-                                      " " + column.entryField.Text + " ";
+                            where += "d.dhous " + ((string)column.comparisonComboBox.SelectedValue) + " " + column.entryField.Text + " ";
                         }
                         break;
-                    case Header.SCHDATE:
+                    case HeaderId.SCHDATE:
                         break;
-                    case Header.SIZE:
+                    case HeaderId.SIZE:
                         break;
                     default:
                         break;
@@ -144,8 +120,20 @@ namespace VarsityReportingTool {
             return query;
         }
 
+        private class ColumnHeader {
+            public HeaderId Id { get; private set; }
+            public string Description { get; private set; }
+            public HeaderType Type { get; private set; }
+
+            public ColumnHeader(HeaderId id, string description, HeaderType headerType) {
+                this.Id = id;
+                this.Description = description;
+                this.Type = headerType;
+            }
+        }
+
         private class Column {
-            public Header header;
+            public HeaderId headerId;
             public ComboBox comparisonComboBox;
             public Control entryField;
             private CustomReportManager manager;
@@ -176,15 +164,14 @@ namespace VarsityReportingTool {
                 this.label.Click += new System.EventHandler(columnLabel_click);
                 this.panel.Controls.Add(this.label);
 
-                // header dropdown
+                // headerId dropdown
                 this.headerComboBox = new ComboBox();
                 this.headerComboBox.FormattingEnabled = true;
                 this.headerComboBox.Size = new System.Drawing.Size(95, 21);
                 // TODO: unique values only?
-                //this.headerComboBox.DataSource = availableColumnHeaders;
-                //this.headerComboBox.DataSource = Enum.GetValues(typeof(Header));
-                this.headerComboBox.DataSource = EnumExtensions.GetLabels(typeof(Header));
-                this.headerComboBox.DisplayMember = "Label";
+                this.headerComboBox.DataSource = headers.Values.ToList();
+                this.headerComboBox.DisplayMember = "Description";
+                this.headerComboBox.ValueMember = "Id";
                 this.headerComboBox.SelectedIndexChanged += new System.EventHandler(headerComboBox_SelectedIndexChanged);
                 this.panel.Controls.Add(this.headerComboBox);
 
@@ -192,8 +179,7 @@ namespace VarsityReportingTool {
                 this.comparisonComboBox = new ComboBox();
                 this.comparisonComboBox.FormattingEnabled = true;
                 this.comparisonComboBox.Size = new System.Drawing.Size(74, 21);
-                //this.comparisonComboBox.DataSource = Enum.GetValues(typeof(StringCompare));
-                this.comparisonComboBox.DataSource = EnumExtensions.GetQueryValues(typeof(StringCompare));
+                this.comparisonComboBox.DataSource = comparisons[HeaderType.String];
                 this.panel.Controls.Add(this.comparisonComboBox);
 
                 // entry field
@@ -257,16 +243,12 @@ namespace VarsityReportingTool {
             }
 
             private void headerComboBox_SelectedIndexChanged(object sender, EventArgs e) {
-                //Header newHeader = ((Header)this.headerComboBox.SelectedValue);
-                Header newHeader = EnumExtensions.GetHeaderEnumFromString<Header>((string)this.headerComboBox.SelectedValue);
+                HeaderId newHeaderId = (HeaderId)Enum.Parse(typeof(HeaderId), this.headerComboBox.SelectedValue.ToString());
 
-                HeaderType headerType = EnumExtensions.GetAttribute<HeaderInfoAttribute>(header).Type;
-                HeaderType newHeaderType = EnumExtensions.GetAttribute<HeaderInfoAttribute>(newHeader).Type;
-                if(headerType != newHeaderType) {
-                    switch(newHeaderType) {
+                if(headerId != newHeaderId) {
+                    switch(headers[newHeaderId].Type) {
                         case HeaderType.Date:
-                            //this.comparisonComboBox.DataSource = Enum.GetValues(typeof(NumberCompare));
-                            this.comparisonComboBox.DataSource = EnumExtensions.GetQueryValues(typeof(NumberCompare));
+                            this.comparisonComboBox.DataSource = comparisons[headers[newHeaderId].Type];
                             this.panel.Controls.Remove(this.entryField);
                             this.entryField = new DateTimePicker();
                             this.entryField.Size = new System.Drawing.Size(118, 20);
@@ -277,8 +259,7 @@ namespace VarsityReportingTool {
                             this.panel.Controls.SetChildIndex(this.entryField, this.panel.Controls.GetChildIndex(this.comparisonComboBox) + 1);
                             break;
                         case HeaderType.Decimal:
-                            //this.comparisonComboBox.DataSource = Enum.GetValues(typeof(NumberCompare));
-                            this.comparisonComboBox.DataSource = EnumExtensions.GetQueryValues(typeof(NumberCompare));
+                            this.comparisonComboBox.DataSource = comparisons[headers[newHeaderId].Type];
                             this.panel.Controls.Remove(this.entryField);
                             this.entryField = new TextBox();
                             this.entryField.Size = new System.Drawing.Size(118, 20);
@@ -287,8 +268,7 @@ namespace VarsityReportingTool {
                             this.panel.Controls.SetChildIndex(this.entryField, this.panel.Controls.GetChildIndex(this.comparisonComboBox) + 1);
                             break;
                         case HeaderType.Integer:
-                            //this.comparisonComboBox.DataSource = Enum.GetValues(typeof(NumberCompare));
-                            this.comparisonComboBox.DataSource = EnumExtensions.GetQueryValues(typeof(NumberCompare));
+                            this.comparisonComboBox.DataSource = comparisons[headers[newHeaderId].Type];
                             this.panel.Controls.Remove(this.entryField);
                             this.entryField = new TextBox();
                             this.entryField.Size = new System.Drawing.Size(118, 20);
@@ -297,8 +277,7 @@ namespace VarsityReportingTool {
                             this.panel.Controls.SetChildIndex(this.entryField, this.panel.Controls.GetChildIndex(this.comparisonComboBox) + 1);
                             break;
                         case HeaderType.String:
-                            //this.comparisonComboBox.DataSource = Enum.GetValues(typeof(StringCompare));
-                            this.comparisonComboBox.DataSource = EnumExtensions.GetQueryValues(typeof(StringCompare));
+                            this.comparisonComboBox.DataSource = comparisons[headers[newHeaderId].Type];
                             this.panel.Controls.Remove(this.entryField);
                             this.entryField = new TextBox();
                             this.entryField.Size = new System.Drawing.Size(118, 20);
@@ -306,12 +285,12 @@ namespace VarsityReportingTool {
                             this.panel.Controls.SetChildIndex(this.entryField, this.panel.Controls.GetChildIndex(this.comparisonComboBox) + 1);
                             break;
                         default:
-                            MessageBox.Show("Error: HeaderType not defined for entry: " + newHeaderType);
+                            MessageBox.Show("Error: HeaderType not defined for entry: " + headers[newHeaderId].Type);
                             break;
                     }
                 }
 
-                header = newHeader;
+                headerId = newHeaderId;
             }
 
             // allow only numbers or period in entry field
@@ -339,49 +318,6 @@ namespace VarsityReportingTool {
                 this.panel.Parent.Controls.SetChildIndex(this.panel, this.panel.Parent.Controls.GetChildIndex(this.panel) + 1);
                 manager.UpdateColumns();
             }
-        }
-    }
-
-    static class EnumExtensions {
-        public static T GetCompareEnumFromString<T>(string stringValue) where T : struct {
-            foreach(object e in Enum.GetValues(typeof(T))) {
-                if(EnumExtensions.GetAttribute<CompareInfoAttribute>((Enum)e).QueryValue.Equals(stringValue)) {
-                    return (T)e;
-                }
-            }
-            return default(T);
-        }
-
-        public static T GetHeaderEnumFromString<T>(string stringValue) where T : struct {
-            foreach(object e in Enum.GetValues(typeof(T))) {
-                if(EnumExtensions.GetAttribute<HeaderInfoAttribute>((Enum)e).Label.Equals(stringValue)) {
-                    return (T)e;
-                }
-            }
-            return default(T);
-        }
-
-        public static TAttribute GetAttribute<TAttribute>(this Enum value) where TAttribute : Attribute {
-            Type type = value.GetType();
-            string name = Enum.GetName(type, value);
-            System.Reflection.FieldInfo fieldInfo = type.GetField(name);
-            return fieldInfo.GetCustomAttributes(false).OfType<TAttribute>().SingleOrDefault();
-        }
-
-        public static IEnumerable<string> GetLabels(Type enumType) {
-            Collection<string> labels = new Collection<string>();
-            foreach(Enum e in Enum.GetValues(enumType)) {
-                labels.Add(GetAttribute<HeaderInfoAttribute>(e).Label);
-            }
-            return labels;
-        }
-
-        public static IEnumerable<string> GetQueryValues(Type enumType) {
-            Collection<string> labels = new Collection<string>();
-            foreach(Enum e in Enum.GetValues(enumType)) {
-                labels.Add(GetAttribute<CompareInfoAttribute>(e).QueryValue);
-            }
-            return labels;
         }
     }
 }
