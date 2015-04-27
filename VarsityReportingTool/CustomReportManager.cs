@@ -52,6 +52,7 @@ namespace VarsityReportingTool {
         private List<Header> availableColumnHeaders = new List<Header>(Enum.GetValues(typeof(Header)).Cast<Header>());
         private FlowLayoutPanel columnsPanel;
         private List<Column> customReportColumns = new List<Column>();
+        private Column selectedColumn;
 
         public CustomReportManager(FlowLayoutPanel columnsPanel) {
             this.columnsPanel = columnsPanel;
@@ -60,14 +61,19 @@ namespace VarsityReportingTool {
         public void AddColumn() {
             customReportColumns.Add(new Column(this, customReportColumns.Count));
             columnsPanel.Controls.Add(customReportColumns.Last().getPanel());
-            updateColumns();
+            UpdateColumns();
         }
 
         public void RemoveColumn() {
-
+            if(selectedColumn != null) {
+                customReportColumns.Remove(selectedColumn);
+                columnsPanel.Controls.Remove(selectedColumn.getPanel());
+                selectedColumn = null;
+            }
+            UpdateColumns();
         }
 
-        public void updateColumns() {
+        public void UpdateColumns() {
             int count = this.customReportColumns.Count;
             for(int i = 0; i != count; ++i) {
                 Column column = this.customReportColumns[i];
@@ -75,7 +81,15 @@ namespace VarsityReportingTool {
                 column.setId(columnIndexInPanel + 1);
                 column.setUpButtonEnabled(columnIndexInPanel > 0);
                 column.setDownButtonEnabled(columnIndexInPanel < (count - 1));
+                column.setLabelColor();
             }
+        }
+
+        private void SelectColumn(Column column) {
+            if(selectedColumn != null) selectedColumn.setSelected(false);
+            selectedColumn = column;
+            selectedColumn.setSelected(true);
+            UpdateColumns();
         }
 
         private class Column {
@@ -88,6 +102,7 @@ namespace VarsityReportingTool {
             private Control entryField;
             private Button moveUpButton;
             private Button moveDownButton;
+            private bool selected;
 
             public Column(CustomReportManager manager, int id) {
                 this.manager = manager;
@@ -106,6 +121,7 @@ namespace VarsityReportingTool {
                 this.label.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
                 this.label.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
                 this.label.Text = (id + 1).ToString();
+                this.label.Click += new System.EventHandler(columnLabel_click);
                 this.panel.Controls.Add(this.label);
 
                 // header dropdown
@@ -168,6 +184,24 @@ namespace VarsityReportingTool {
 
             public void setDownButtonEnabled(bool value) {
                 moveDownButton.Enabled = value;
+            }
+
+            public void setSelected(bool value) {
+                this.selected = value;
+            }
+
+            public void setLabelColor() {
+                if(this.selected) {
+                    this.label.ForeColor = System.Drawing.Color.White;
+                    this.label.BackColor = System.Drawing.Color.Blue;
+                } else {
+                    this.label.ForeColor = System.Drawing.Color.Black;
+                    this.label.BackColor = System.Drawing.Color.White;
+                }
+            }
+
+            private void columnLabel_click(object sender, EventArgs e) {
+                manager.SelectColumn(this);
             }
 
             private void headerComboBox_SelectedIndexChanged(object sender, EventArgs e) {
@@ -246,12 +280,12 @@ namespace VarsityReportingTool {
 
             private void moveUpButton_Click(object sender, EventArgs e) {
                 this.panel.Parent.Controls.SetChildIndex(this.panel, this.panel.Parent.Controls.GetChildIndex(this.panel) - 1);
-                manager.updateColumns();
+                manager.UpdateColumns();
             }
 
             private void moveDownButton_Click(object sender, EventArgs e) {
                 this.panel.Parent.Controls.SetChildIndex(this.panel, this.panel.Parent.Controls.GetChildIndex(this.panel) + 1);
-                manager.updateColumns();
+                manager.UpdateColumns();
             }
         }
     }

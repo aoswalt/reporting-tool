@@ -396,7 +396,7 @@ namespace VarsityReportingTool {
         }
 
         private void btnRemoveColumn_Click(object sender, EventArgs e) {
-
+            customReports.RemoveColumn();
         }
 
         private void btnRunCustomReport_Click(object sender, EventArgs e) {
