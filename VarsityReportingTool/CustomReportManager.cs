@@ -1,35 +1,54 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace VarsityReportingTool {
+    public enum HeaderType { String, Integer, Decimal, Date }
+    public enum Header {
+        [HeaderInfo(HeaderType.String, "Cut House")]    HOUSE,
+        [HeaderInfo(HeaderType.Date, "Sch Date")]       SCHDATE,
+        [HeaderInfo(HeaderType.Decimal, "Size")]        SIZE
+    }
+    public enum StringCompare {
+        [CompareInfo("LIKE")]       LIKE,
+        [CompareInfo("NOT LIKE")]   NOTLIKE,
+        [CompareInfo("IN")]         IN,
+        [CompareInfo("NOT IN")]     NOTIN
+    }
+    public enum NumberCompare {
+        [CompareInfo("=")]      EQUALS,
+        [CompareInfo("<>")]     NOTEQUALS,
+        [CompareInfo(">")]      GREATER,
+        [CompareInfo(">=")]     GREATEREQUALS,
+        [CompareInfo("<")]      LESS,
+        [CompareInfo("<=")]     LESSEQUALS,
+        [CompareInfo("IN")]     IN,
+        [CompareInfo("NOT IN")] NOTIN
+    }
+
+    class HeaderInfoAttribute : Attribute {
+        public HeaderInfoAttribute(HeaderType type, string label) {
+            this.Type = type;
+            this.Label = label;
+        }
+
+        public HeaderType Type { get; private set; }
+        public string Label { get; private set; }
+    }
+
+    class CompareInfoAttribute : Attribute {
+        public CompareInfoAttribute(string queryValue) {
+            this.QueryValue = queryValue;
+        }
+
+        public string QueryValue { get; private set; }
+    }
 
     class CustomReportManager {
-        private enum HeaderType { String, Integer, Decimal, Date }
-        private enum Header {
-            [HeaderInfo(HeaderType.String, "Cut House")]    HOUSE,
-            [HeaderInfo(HeaderType.Date, "Sch Date")]       SCHDATE,
-            [HeaderInfo(HeaderType.Decimal, "Size")]        SIZE
-        }
-        private enum StringCompare { 
-            [CompareInfo("LIKE")]       LIKE,
-            [CompareInfo("NOT LIKE")]   NOTLIKE,
-            [CompareInfo("IN")]         IN,
-            [CompareInfo("NOT IN")]     NOTIN
-        }
-        private enum NumberCompare {
-            [CompareInfo("=")]      EQUALS,
-            [CompareInfo("<>")]     NOTEQUALS,
-            [CompareInfo(">")]      GREATER,
-            [CompareInfo(">=")]     GREATEREQUALS,
-            [CompareInfo("<")]      LESS,
-            [CompareInfo("<=")]     LESSEQUALS,
-            [CompareInfo("IN")]     IN,
-            [CompareInfo("NOT IN")] NOTIN
-        }
         private List<Header> availableColumnHeaders = new List<Header>(Enum.GetValues(typeof(Header)).Cast<Header>());
         private FlowLayoutPanel columnsPanel;
         private List<Column> customReportColumns = new List<Column>();
@@ -57,24 +76,6 @@ namespace VarsityReportingTool {
                 column.setUpButtonEnabled(columnIndexInPanel > 0);
                 column.setDownButtonEnabled(columnIndexInPanel < (count - 1));
             }
-        }
-
-        private class HeaderInfoAttribute : Attribute {
-            public HeaderInfoAttribute(HeaderType type, string label) {
-                this.Type = type;
-                this.Label = label;
-            }
-
-            public HeaderType Type { get; private set; }
-            public string Label { get; private set; }
-        }
-
-        private class CompareInfoAttribute : Attribute {
-            public CompareInfoAttribute(string queryValue) {
-                this.QueryValue = queryValue;
-            }
-
-            public string QueryValue { get; private set; }
         }
 
         private class Column {
@@ -113,7 +114,9 @@ namespace VarsityReportingTool {
                 this.headerComboBox.Size = new System.Drawing.Size(95, 21);
                 // TODO: unique values only?
                 //this.headerComboBox.DataSource = availableColumnHeaders;
-                this.headerComboBox.DataSource = Enum.GetValues(typeof(Header));
+                //this.headerComboBox.DataSource = Enum.GetValues(typeof(Header));
+                this.headerComboBox.DataSource = EnumExtensions.GetLabels(typeof(Header));
+                this.headerComboBox.DisplayMember = "Label";
                 this.headerComboBox.SelectedIndexChanged += new System.EventHandler(headerComboBox_SelectedIndexChanged);
                 this.panel.Controls.Add(this.headerComboBox);
 
@@ -121,7 +124,8 @@ namespace VarsityReportingTool {
                 this.comparisonComboBox = new ComboBox();
                 this.comparisonComboBox.FormattingEnabled = true;
                 this.comparisonComboBox.Size = new System.Drawing.Size(74, 21);
-                this.comparisonComboBox.DataSource = Enum.GetValues(typeof(NumberCompare));
+                //this.comparisonComboBox.DataSource = Enum.GetValues(typeof(StringCompare));
+                this.comparisonComboBox.DataSource = EnumExtensions.GetQueryValues(typeof(StringCompare));
                 this.panel.Controls.Add(this.comparisonComboBox);
 
                 // entry field
@@ -167,14 +171,16 @@ namespace VarsityReportingTool {
             }
 
             private void headerComboBox_SelectedIndexChanged(object sender, EventArgs e) {
-                Header newHeader = ((Header)this.headerComboBox.SelectedValue);
+                //Header newHeader = ((Header)this.headerComboBox.SelectedValue);
+                Header newHeader = EnumExtensions.GetHeaderEnumFromString<Header>((string)this.headerComboBox.SelectedValue);
 
                 HeaderType headerType = EnumExtensions.GetAttribute<HeaderInfoAttribute>(header).Type;
                 HeaderType newHeaderType = EnumExtensions.GetAttribute<HeaderInfoAttribute>(newHeader).Type;
                 if(headerType != newHeaderType) {
                     switch(newHeaderType) {
                         case HeaderType.Date:
-                            this.comparisonComboBox.DataSource = Enum.GetValues(typeof(NumberCompare));
+                            //this.comparisonComboBox.DataSource = Enum.GetValues(typeof(NumberCompare));
+                            this.comparisonComboBox.DataSource = EnumExtensions.GetQueryValues(typeof(NumberCompare));
                             this.panel.Controls.Remove(this.entryField);
                             this.entryField = new DateTimePicker();
                             this.entryField.Size = new System.Drawing.Size(118, 20);
@@ -185,7 +191,8 @@ namespace VarsityReportingTool {
                             this.panel.Controls.SetChildIndex(this.entryField, this.panel.Controls.GetChildIndex(this.comparisonComboBox) + 1);
                             break;
                         case HeaderType.Decimal:
-                            this.comparisonComboBox.DataSource = Enum.GetValues(typeof(NumberCompare));
+                            //this.comparisonComboBox.DataSource = Enum.GetValues(typeof(NumberCompare));
+                            this.comparisonComboBox.DataSource = EnumExtensions.GetQueryValues(typeof(NumberCompare));
                             this.panel.Controls.Remove(this.entryField);
                             this.entryField = new TextBox();
                             this.entryField.Size = new System.Drawing.Size(118, 20);
@@ -194,7 +201,8 @@ namespace VarsityReportingTool {
                             this.panel.Controls.SetChildIndex(this.entryField, this.panel.Controls.GetChildIndex(this.comparisonComboBox) + 1);
                             break;
                         case HeaderType.Integer:
-                            this.comparisonComboBox.DataSource = Enum.GetValues(typeof(NumberCompare));
+                            //this.comparisonComboBox.DataSource = Enum.GetValues(typeof(NumberCompare));
+                            this.comparisonComboBox.DataSource = EnumExtensions.GetQueryValues(typeof(NumberCompare));
                             this.panel.Controls.Remove(this.entryField);
                             this.entryField = new TextBox();
                             this.entryField.Size = new System.Drawing.Size(118, 20);
@@ -203,7 +211,8 @@ namespace VarsityReportingTool {
                             this.panel.Controls.SetChildIndex(this.entryField, this.panel.Controls.GetChildIndex(this.comparisonComboBox) + 1);
                             break;
                         case HeaderType.String:
-                            this.comparisonComboBox.DataSource = Enum.GetValues(typeof(StringCompare));
+                            //this.comparisonComboBox.DataSource = Enum.GetValues(typeof(StringCompare));
+                            this.comparisonComboBox.DataSource = EnumExtensions.GetQueryValues(typeof(StringCompare));
                             this.panel.Controls.Remove(this.entryField);
                             this.entryField = new TextBox();
                             this.entryField.Size = new System.Drawing.Size(118, 20);
@@ -248,11 +257,45 @@ namespace VarsityReportingTool {
     }
 
     static class EnumExtensions {
+        public static T GetCompareEnumFromString<T>(string stringValue) where T : struct {
+            foreach(object e in Enum.GetValues(typeof(T))) {
+                if(EnumExtensions.GetAttribute<CompareInfoAttribute>((Enum)e).QueryValue.Equals(stringValue)) {
+                    return (T)e;
+                }
+            }
+            return default(T);
+        }
+
+        public static T GetHeaderEnumFromString<T>(string stringValue) where T : struct {
+            foreach(object e in Enum.GetValues(typeof(T))) {
+                if(EnumExtensions.GetAttribute<HeaderInfoAttribute>((Enum)e).Label.Equals(stringValue)) {
+                    return (T)e;
+                }
+            }
+            return default(T);
+        }
+
         public static TAttribute GetAttribute<TAttribute>(this Enum value) where TAttribute : Attribute {
             Type type = value.GetType();
             string name = Enum.GetName(type, value);
             System.Reflection.FieldInfo fieldInfo = type.GetField(name);
             return fieldInfo.GetCustomAttributes(false).OfType<TAttribute>().SingleOrDefault();
+        }
+
+        public static IEnumerable<string> GetLabels(Type enumType) {
+            Collection<string> labels = new Collection<string>();
+            foreach(Enum e in Enum.GetValues(enumType)) {
+                labels.Add(GetAttribute<HeaderInfoAttribute>(e).Label);
+            }
+            return labels;
+        }
+
+        public static IEnumerable<string> GetQueryValues(Type enumType) {
+            Collection<string> labels = new Collection<string>();
+            foreach(Enum e in Enum.GetValues(enumType)) {
+                labels.Add(GetAttribute<CompareInfoAttribute>(e).QueryValue);
+            }
+            return labels;
         }
     }
 }
