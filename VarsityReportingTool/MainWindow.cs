@@ -78,6 +78,11 @@ namespace VarsityReportingTool {
 
         private void reportTabControl_SelectedIndexChanged(object sender, EventArgs e) {
             switch(((TabControl)sender).SelectedIndex) {
+                case 3:     // custom report tab
+                    this.AcceptButton = btnRunCustomReport;
+                    this.CancelButton = btnClearCustomEntries;
+                    this.cutomReportColumnsFlowPanel.Focus();
+                    break;
                 case 2:     // query tab
                     this.AcceptButton = btnRunQuery;
                     this.CancelButton = btnClearOrderEntries;
@@ -393,10 +398,12 @@ namespace VarsityReportingTool {
 
         private void btnAddColumn_Click(object sender, EventArgs e) {
             customReports.AddColumn();
+            this.cutomReportColumnsFlowPanel.Focus();
         }
 
         private void btnRemoveColumn_Click(object sender, EventArgs e) {
             customReports.RemoveColumn();
+            this.cutomReportColumnsFlowPanel.Focus();
         }
 
         private void btnRunCustomReport_Click(object sender, EventArgs e) {
@@ -411,10 +418,11 @@ namespace VarsityReportingTool {
             runQuery(query);
 
             btnRunQuery.Enabled = true;
+            this.cutomReportColumnsFlowPanel.Focus();
         }
 
         private void btnClearCustomEntries_Click(object sender, EventArgs e) {
-
+            this.cutomReportColumnsFlowPanel.Focus();
         }
 
 

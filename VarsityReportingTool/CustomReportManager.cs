@@ -82,38 +82,110 @@ namespace VarsityReportingTool {
             UpdateColumns();
         }
 
+        private string getEntryValue(Column column) {
+            string entry = "";
+            string comparisonValue = ((string)column.comparisonComboBox.SelectedValue);
+
+            switch(headers[column.headerId].Type) {
+                case HeaderType.Date: {
+                    entry = ((DateTimePicker)column.entryField).Value.Date.ToString("yyyy-MM-dd");
+                    entry = '\'' + entry + '\'';
+                    } break;
+                case HeaderType.Decimal:
+                case HeaderType.Integer: {
+                    entry = ((TextBox)column.entryField).Text.ToUpper();
+
+                    if(comparisonValue.Contains("IN")) {
+                        entry = '(' + entry + ')';
+                    }
+                    } break;
+                case HeaderType.String: {
+                    entry = ((TextBox)column.entryField).Text.ToUpper();
+
+                    if(!entry.Contains('\'')) {
+                        entry = '\'' + entry.Replace(",", "','") + '\'';
+                    }
+
+                    if(comparisonValue.Contains("IN")) {
+                        entry = '(' + entry + ')';
+                    }
+                    } break;
+                default:
+                    break;
+            }
+
+            return entry;
+        }
+
         public string GenerateQuery() {
             List<HeaderId> includedHeaders = new List<HeaderId>();
-            string columns = "";
-            string innerColumns = "";
-            string where = "";
+            List<string> selectColumns = new List<string>();
+            List<string> innerSelectColumns = new List<string>();
+            List<string> whereClauses = new List<string>();
+            List<string> joins = new List<string>();
 
             foreach(Column column in customReportColumns) {
+                string comparisonValue = ((string)column.comparisonComboBox.SelectedValue);
+                string entryValue = getEntryValue(column);
+
                 switch(column.headerId) {
                     case HeaderId.HOUSE: 
                         if(!includedHeaders.Contains(column.headerId)) {
-                            columns += "det.dhous ";
-                            innerColumns += "d.dhous ";
+                            selectColumns.Add("det.dhous");
+                            innerSelectColumns.Add("d.dhous");
                             includedHeaders.Add(column.headerId);
                         }
 
                         if(column.entryField.Text != "") {
-                            if(where == "") where += "WHERE ";
-                            where += "d.dhous " + ((string)column.comparisonComboBox.SelectedValue) + " " + column.entryField.Text + " ";
+                            whereClauses.Add(String.Format("(UPPER(d.dhous) {0} {1})", comparisonValue, entryValue));
                         }
                         break;
                     case HeaderId.SCHDATE:
+                        if(!includedHeaders.Contains(column.headerId)) {
+                            selectColumns.Add("det.scdat");
+                            innerSelectColumns.Add("DATE(d.dsccy||d.dscyr||'-'||RIGHT('00'||d.dscmo, 2)||'-'||RIGHT('00'||d.dscda, 2)) AS scdat");
+                            includedHeaders.Add(column.headerId);
+                        }
+
+                        if(((DateTimePicker)column.entryField).Checked) {
+                            whereClauses.Add(String.Format(@"(CASE WHEN d.dscda = 0 THEN NULL ELSE 
+                                                              DATE(d.dsccy||d.dscyr||'-'||RIGHT('00'||d.dscmo, 2)||'-'||RIGHT('00'||d.dscda, 2)) END) {0} DATE({1}) ", 
+                                                            comparisonValue, entryValue));
+                        }
                         break;
                     case HeaderId.SIZE:
+                        if(!includedHeaders.Contains(column.headerId)) {
+                            selectColumns.Add("det.dlsiz");
+                            innerSelectColumns.Add("d.dlsiz");
+                            includedHeaders.Add(column.headerId);
+                        }
+
+                        if(column.entryField.Text != "") {
+                            whereClauses.Add(String.Format("(d.dlsiz {0} {1})", comparisonValue, entryValue));
+                        }
                         break;
                     default:
                         break;
                 }
             }
 
-            string query = String.Format("SELECT {0} FROM ( SELECT {1} FROM VARSITYF.DETAIL AS d {2} ) AS det", columns, innerColumns, where);
+            string combinedSelectColumns = selectColumns[0];
+            for(int i = 1; i != selectColumns.Count; ++i) {
+                combinedSelectColumns += ", " + selectColumns[i];
+            }
 
-            //query += where;
+            string combinedInnerSelectColumns = innerSelectColumns[0];
+            for(int i = 1; i != innerSelectColumns.Count; ++i) {
+                combinedInnerSelectColumns += ", " + innerSelectColumns[i];
+            }
+
+            string combinedWhereClause = whereClauses[0];
+            for(int i = 1; i != whereClauses.Count; ++i) {
+                combinedWhereClause += " AND " + whereClauses[i];
+            }
+
+            string query = String.Format("SELECT {0} FROM ( SELECT {1} FROM VARSITYF.DETAIL AS d WHERE {2}) AS det {3}",
+                                         combinedSelectColumns, combinedInnerSelectColumns, combinedWhereClause, "" /* joins*/);
 
             // default sort by style code
             //query += " ORDER BY det.ditem";
@@ -177,9 +249,8 @@ namespace VarsityReportingTool {
 
                 // compare dropdown
                 this.comparisonComboBox = new ComboBox();
-                this.comparisonComboBox.FormattingEnabled = true;
                 this.comparisonComboBox.Size = new System.Drawing.Size(74, 21);
-                this.comparisonComboBox.DataSource = comparisons[HeaderType.String];
+                this.comparisonComboBox.DataSource = comparisons[HeaderType.String].ToList();
                 this.panel.Controls.Add(this.comparisonComboBox);
 
                 // entry field
@@ -248,7 +319,7 @@ namespace VarsityReportingTool {
                 if(headerId != newHeaderId) {
                     switch(headers[newHeaderId].Type) {
                         case HeaderType.Date:
-                            this.comparisonComboBox.DataSource = comparisons[headers[newHeaderId].Type];
+                            this.comparisonComboBox.DataSource = comparisons[headers[newHeaderId].Type].ToList();
                             this.panel.Controls.Remove(this.entryField);
                             this.entryField = new DateTimePicker();
                             this.entryField.Size = new System.Drawing.Size(118, 20);
@@ -259,7 +330,7 @@ namespace VarsityReportingTool {
                             this.panel.Controls.SetChildIndex(this.entryField, this.panel.Controls.GetChildIndex(this.comparisonComboBox) + 1);
                             break;
                         case HeaderType.Decimal:
-                            this.comparisonComboBox.DataSource = comparisons[headers[newHeaderId].Type];
+                            this.comparisonComboBox.DataSource = comparisons[headers[newHeaderId].Type].ToList();
                             this.panel.Controls.Remove(this.entryField);
                             this.entryField = new TextBox();
                             this.entryField.Size = new System.Drawing.Size(118, 20);
@@ -268,7 +339,7 @@ namespace VarsityReportingTool {
                             this.panel.Controls.SetChildIndex(this.entryField, this.panel.Controls.GetChildIndex(this.comparisonComboBox) + 1);
                             break;
                         case HeaderType.Integer:
-                            this.comparisonComboBox.DataSource = comparisons[headers[newHeaderId].Type];
+                            this.comparisonComboBox.DataSource = comparisons[headers[newHeaderId].Type].ToList();
                             this.panel.Controls.Remove(this.entryField);
                             this.entryField = new TextBox();
                             this.entryField.Size = new System.Drawing.Size(118, 20);
@@ -277,7 +348,7 @@ namespace VarsityReportingTool {
                             this.panel.Controls.SetChildIndex(this.entryField, this.panel.Controls.GetChildIndex(this.comparisonComboBox) + 1);
                             break;
                         case HeaderType.String:
-                            this.comparisonComboBox.DataSource = comparisons[headers[newHeaderId].Type];
+                            this.comparisonComboBox.DataSource = comparisons[headers[newHeaderId].Type].ToList();
                             this.panel.Controls.Remove(this.entryField);
                             this.entryField = new TextBox();
                             this.entryField.Size = new System.Drawing.Size(118, 20);
@@ -293,17 +364,17 @@ namespace VarsityReportingTool {
                 headerId = newHeaderId;
             }
 
-            // allow only numbers or period in entry field
+            // allow only numbers, comma, or period in entry field
             private void entryField_Decimal_KeyPress(object sender, KeyPressEventArgs e) {
-                if(!Char.IsDigit(e.KeyChar) && !Char.IsControl(e.KeyChar) && !(e.KeyChar == '.')) {
+                if(!Char.IsDigit(e.KeyChar) && !Char.IsControl(e.KeyChar) && !(e.KeyChar == '.') && !(e.KeyChar == ',')) {
                     e.Handled = true;
                     System.Media.SystemSounds.Beep.Play();
                 }
             }
 
-            // allow only numbers in entry field
+            // allow only numbers or comma in entry field
             private void entryField_Integer_KeyPress(object sender, KeyPressEventArgs e) {
-                if(!Char.IsDigit(e.KeyChar) && !Char.IsControl(e.KeyChar)) {
+                if(!Char.IsDigit(e.KeyChar) && !Char.IsControl(e.KeyChar) && !(e.KeyChar == ',')) {
                     e.Handled = true;
                     System.Media.SystemSounds.Beep.Play();
                 }

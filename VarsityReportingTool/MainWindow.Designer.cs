@@ -469,6 +469,7 @@
             this.txtQuery.Size = new System.Drawing.Size(556, 113);
             this.txtQuery.TabIndex = 32;
             this.txtQuery.Text = "";
+            this.txtQuery.WordWrap = false;
             // 
             // btnRunQuery
             // 
@@ -544,6 +545,7 @@
             // 
             // panel3
             // 
+            this.panel3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.panel3.Controls.Add(this.btnRunCustomReport);
             this.panel3.Controls.Add(this.btnClearCustomEntries);
             this.panel3.Location = new System.Drawing.Point(171, 140);
