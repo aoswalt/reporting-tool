@@ -536,12 +536,14 @@
             this.cutomReportColumnsFlowPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.cutomReportColumnsFlowPanel.AutoScroll = true;
+            this.cutomReportColumnsFlowPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.cutomReportColumnsFlowPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.cutomReportColumnsFlowPanel.Location = new System.Drawing.Point(151, 0);
             this.cutomReportColumnsFlowPanel.Name = "cutomReportColumnsFlowPanel";
             this.cutomReportColumnsFlowPanel.Size = new System.Drawing.Size(405, 139);
             this.cutomReportColumnsFlowPanel.TabIndex = 0;
             this.cutomReportColumnsFlowPanel.WrapContents = false;
+            this.cutomReportColumnsFlowPanel.Click += new System.EventHandler(this.cutomReportColumnsFlowPanel_Click);
             // 
             // panel3
             // 

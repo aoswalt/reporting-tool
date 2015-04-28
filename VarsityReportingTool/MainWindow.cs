@@ -396,6 +396,10 @@ namespace VarsityReportingTool {
         // Custom Page
         // ====================
 
+        private void cutomReportColumnsFlowPanel_Click(object sender, EventArgs e) {
+            this.cutomReportColumnsFlowPanel.Focus();
+        }
+
         private void btnAddColumn_Click(object sender, EventArgs e) {
             customReports.AddColumn();
             this.cutomReportColumnsFlowPanel.Focus();

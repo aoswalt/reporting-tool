@@ -9,7 +9,8 @@ using System.Windows.Forms;
 namespace VarsityReportingTool {
     class CustomReportManager {
         private enum HeaderType { String, Integer, Decimal, Date }
-        private enum HeaderId { HOUSE, SCHDATE, SIZE }
+        private enum HeaderId { HOUSE, SCHDATE, ORDDATE, ORDERNUM, VOUCHER, STYLECODE, SIZE, SPEC, NAME, 
+                                WORD1, WORD2, WORD3, WORD4, COLOR1, COLOR2, COLOR3, COLOR4, ITEMCLASS, LATEREASON }
         private static Dictionary<HeaderId, ColumnHeader> headers = new Dictionary<HeaderId, ColumnHeader>();
         private static List<string> stringComparisons = new List<string>(new string[] { "LIKE", "NOT LIKE", "IN", "NOT IN" });
         private static List<string> numberComparisons = new List<string>(new string[] { "=", "<>", ">", ">=", "<", "<=", "IN", "NOT IN" });
@@ -18,8 +19,24 @@ namespace VarsityReportingTool {
 
         static CustomReportManager() {
             headers.Add(HeaderId.HOUSE, new ColumnHeader(HeaderId.HOUSE, "House", HeaderType.String));
-            headers.Add(HeaderId.SCHDATE, new ColumnHeader(HeaderId.SCHDATE, "Sch Date", HeaderType.Date));
+            headers.Add(HeaderId.SCHDATE, new ColumnHeader(HeaderId.SCHDATE, "Schedule Date", HeaderType.Date));
+            headers.Add(HeaderId.ORDDATE, new ColumnHeader(HeaderId.ORDDATE, "Order Date", HeaderType.Date));
+            headers.Add(HeaderId.ORDERNUM, new ColumnHeader(HeaderId.ORDERNUM, "Order Number", HeaderType.Integer));
+            headers.Add(HeaderId.VOUCHER, new ColumnHeader(HeaderId.VOUCHER, "Voucher", HeaderType.Integer));
+            headers.Add(HeaderId.STYLECODE, new ColumnHeader(HeaderId.STYLECODE, "Style Code", HeaderType.String));
             headers.Add(HeaderId.SIZE, new ColumnHeader(HeaderId.SIZE, "Size", HeaderType.Decimal));
+            headers.Add(HeaderId.SPEC, new ColumnHeader(HeaderId.SPEC, "Spec", HeaderType.Decimal));
+            headers.Add(HeaderId.NAME, new ColumnHeader(HeaderId.NAME, "Name", HeaderType.String));
+            headers.Add(HeaderId.WORD1, new ColumnHeader(HeaderId.WORD1, "Word 1", HeaderType.String));
+            headers.Add(HeaderId.WORD2, new ColumnHeader(HeaderId.WORD2, "Word 2", HeaderType.String));
+            headers.Add(HeaderId.WORD3, new ColumnHeader(HeaderId.WORD3, "Word 3", HeaderType.String));
+            headers.Add(HeaderId.WORD4, new ColumnHeader(HeaderId.WORD4, "Word 4", HeaderType.String));
+            headers.Add(HeaderId.COLOR1, new ColumnHeader(HeaderId.COLOR1, "Color 1", HeaderType.String));
+            headers.Add(HeaderId.COLOR2, new ColumnHeader(HeaderId.COLOR2, "Color 2", HeaderType.String));
+            headers.Add(HeaderId.COLOR3, new ColumnHeader(HeaderId.COLOR3, "Color 3", HeaderType.String));
+            headers.Add(HeaderId.COLOR4, new ColumnHeader(HeaderId.COLOR4, "Color 4", HeaderType.String));
+            headers.Add(HeaderId.ITEMCLASS, new ColumnHeader(HeaderId.ITEMCLASS, "Class", HeaderType.String));
+            headers.Add(HeaderId.LATEREASON, new ColumnHeader(HeaderId.LATEREASON, "Late Reason", HeaderType.String));
 
             comparisons.Add(HeaderType.Date, dateComparisons);
             comparisons.Add(HeaderType.Decimal, numberComparisons);
@@ -124,6 +141,11 @@ namespace VarsityReportingTool {
             List<string> whereClauses = new List<string>();
             List<string> joins = new List<string>();
 
+            // sort columns based on order on form
+            customReportColumns.Sort(
+                (c1, c2) => 
+                    (c1.getPanel().Parent.Controls.GetChildIndex(c1.getPanel()).CompareTo(c2.getPanel().Parent.Controls.GetChildIndex(c2.getPanel()))));
+
             foreach(Column column in customReportColumns) {
                 string comparisonValue = ((string)column.comparisonComboBox.SelectedValue);
                 string entryValue = getEntryValue(column);
@@ -131,18 +153,18 @@ namespace VarsityReportingTool {
                 switch(column.headerId) {
                     case HeaderId.HOUSE: 
                         if(!includedHeaders.Contains(column.headerId)) {
-                            selectColumns.Add("det.dhous");
+                            selectColumns.Add(String.Format("det.dhous AS \"{0}\"", headers[column.headerId].Description));
                             innerSelectColumns.Add("d.dhous");
                             includedHeaders.Add(column.headerId);
                         }
 
                         if(column.entryField.Text != "") {
-                            whereClauses.Add(String.Format("(UPPER(d.dhous) {0} {1})", comparisonValue, entryValue));
+                            whereClauses.Add(String.Format("(UPPER(TRIM(d.dhous)) {0} {1})", comparisonValue, entryValue));
                         }
                         break;
                     case HeaderId.SCHDATE:
                         if(!includedHeaders.Contains(column.headerId)) {
-                            selectColumns.Add("det.scdat");
+                            selectColumns.Add(String.Format("det.scdat AS \"{0}\"", headers[column.headerId].Description));
                             innerSelectColumns.Add("DATE(d.dsccy||d.dscyr||'-'||RIGHT('00'||d.dscmo, 2)||'-'||RIGHT('00'||d.dscda, 2)) AS scdat");
                             includedHeaders.Add(column.headerId);
                         }
@@ -153,15 +175,207 @@ namespace VarsityReportingTool {
                                                             comparisonValue, entryValue));
                         }
                         break;
+                    case HeaderId.ORDDATE:
+                        if(!includedHeaders.Contains(column.headerId)) {
+                            selectColumns.Add(String.Format("det.endat AS \"{0}\"", headers[column.headerId].Description));
+                            innerSelectColumns.Add("DATE(d.dorcy||d.doryr||'-'||RIGHT('00'||d.dormo, 2)||'-'||RIGHT('00'||d.dorda, 2)) AS endat");
+                            includedHeaders.Add(column.headerId);
+                        }
+
+                        if(((DateTimePicker)column.entryField).Checked) {
+                            whereClauses.Add(String.Format(@"(CASE WHEN d.dscda = 0 THEN NULL ELSE 
+                                                              DATE(d.dorcy||d.doryr||'-'||RIGHT('00'||d.dormo, 2)||'-'||RIGHT('00'||d.dorda, 2)) END) {0} DATE({1}) ",
+                                                            comparisonValue, entryValue));
+                        }
+                        break;
+                    case HeaderId.ORDERNUM:
+                        if(!includedHeaders.Contains(column.headerId)) {
+                            selectColumns.Add(String.Format("det.ordnr AS \"{0}\"", headers[column.headerId].Description));
+                            if(!innerSelectColumns.Contains("d.ordnr")) { innerSelectColumns.Add("d.ordnr"); }
+                            includedHeaders.Add(column.headerId);
+                        }
+
+                        if(column.entryField.Text != "") {
+                            whereClauses.Add(String.Format("(d.ordnr {0} {1})", comparisonValue, entryValue));
+                        }
+                        break;
+                    case HeaderId.VOUCHER:
+                        if(!includedHeaders.Contains(column.headerId)) {
+                            selectColumns.Add(String.Format("det.orvch AS \"{0}\"", headers[column.headerId].Description));
+                            if(!innerSelectColumns.Contains("d.orvch")) { innerSelectColumns.Add("d.orvch"); }
+                            includedHeaders.Add(column.headerId);
+                        }
+
+                        if(column.entryField.Text != "") {
+                            whereClauses.Add(String.Format("(d.orvch {0} {1})", comparisonValue, entryValue));
+                        }
+                        break;
+                    case HeaderId.STYLECODE:
+                        if(!includedHeaders.Contains(column.headerId)) {
+                            selectColumns.Add(String.Format("det.ditem AS \"{0}\"", headers[column.headerId].Description));
+                            innerSelectColumns.Add("d.ditem");
+                            includedHeaders.Add(column.headerId);
+                        }
+
+                        if(column.entryField.Text != "") {
+                            whereClauses.Add(String.Format("(UPPER(TRIM(d.ditem)) {0} {1})", comparisonValue, entryValue));
+                        }
+                        break;
                     case HeaderId.SIZE:
                         if(!includedHeaders.Contains(column.headerId)) {
-                            selectColumns.Add("det.dlsiz");
+                            selectColumns.Add(String.Format("det.dlsiz AS \"{0}\"", headers[column.headerId].Description));
                             innerSelectColumns.Add("d.dlsiz");
                             includedHeaders.Add(column.headerId);
                         }
 
                         if(column.entryField.Text != "") {
                             whereClauses.Add(String.Format("(d.dlsiz {0} {1})", comparisonValue, entryValue));
+                        }
+                        break;
+                    case HeaderId.SPEC:
+                        if(!includedHeaders.Contains(column.headerId)) {
+                            if(!innerSelectColumns.Contains("d.ordnr")) { innerSelectColumns.Add("d.ordnr"); }
+                            if(!innerSelectColumns.Contains("d.orvch")) { innerSelectColumns.Add("d.orvch"); }
+                            if(!innerSelectColumns.Contains("d.dpvch")) { innerSelectColumns.Add("d.dpvch"); }
+                            selectColumns.Add(String.Format("siz.letwid AS \"{0}\"", headers[column.headerId].Description));
+                            joins.Add(@"
+                                LEFT JOIN (
+                                            SELECT DISTINCT s.ordnr, s.orvch, s.letwid
+                                            FROM VARSITYF.HLDSIZ AS s
+                                ) AS siz
+                                ON det.ordnr = siz.ordnr AND det.dpvch = siz.orvch");
+                            includedHeaders.Add(column.headerId);
+                        }
+
+                        if(column.entryField.Text != "") {
+                            whereClauses.Add(String.Format("(d.dlsiz {0} {1})", comparisonValue, entryValue));
+                        }
+                        break;
+                    case HeaderId.NAME:
+                        if(!includedHeaders.Contains(column.headerId)) {
+                            if(!innerSelectColumns.Contains("d.ordnr")) { innerSelectColumns.Add("d.ordnr"); }
+                            if(!innerSelectColumns.Contains("d.orvch")) { innerSelectColumns.Add("d.orvch"); }
+                            selectColumns.Add(String.Format("nam.letname AS \"{0}\"", headers[column.headerId].Description));
+                            joins.Add(@"
+                                LEFT JOIN 
+                                            DJLIBR.ORD_NAM_C 
+                                 AS nam
+                                ON det.ordnr = nam.ordnr AND det.orvch = nam.orvch AND nam.letname <> ''");
+                            includedHeaders.Add(column.headerId);
+                        }
+
+                        if(column.entryField.Text != "") {
+                            whereClauses.Add(String.Format("(d.dlsiz {0} {1})", comparisonValue, entryValue));
+                        }
+                        break;
+                    case HeaderId.WORD1:
+                        if(!includedHeaders.Contains(column.headerId)) {
+                            selectColumns.Add(String.Format("det.dlwr1 AS \"{0}\"", headers[column.headerId].Description));
+                            innerSelectColumns.Add("d.dlwr1");
+                            includedHeaders.Add(column.headerId);
+                        }
+
+                        if(column.entryField.Text != "") {
+                            whereClauses.Add(String.Format("(UPPER(TRIM(d.dlwr1)) {0} {1})", comparisonValue, entryValue));
+                        }
+                        break;
+                    case HeaderId.WORD2:
+                        if(!includedHeaders.Contains(column.headerId)) {
+                            selectColumns.Add(String.Format("det.dlwr2 AS \"{0}\"", headers[column.headerId].Description));
+                            innerSelectColumns.Add("d.dlwr2");
+                            includedHeaders.Add(column.headerId);
+                        }
+
+                        if(column.entryField.Text != "") {
+                            whereClauses.Add(String.Format("(UPPER(TRIM(d.dlwr2)) {0} {1})", comparisonValue, entryValue));
+                        }
+                        break;
+                    case HeaderId.WORD3:
+                        if(!includedHeaders.Contains(column.headerId)) {
+                            selectColumns.Add(String.Format("det.dlwr3 AS \"{0}\"", headers[column.headerId].Description));
+                            innerSelectColumns.Add("d.dlwr3");
+                            includedHeaders.Add(column.headerId);
+                        }
+
+                        if(column.entryField.Text != "") {
+                            whereClauses.Add(String.Format("(UPPER(TRIM(d.dlwr3)) {0} {1})", comparisonValue, entryValue));
+                        }
+                        break;
+                    case HeaderId.WORD4:
+                        if(!includedHeaders.Contains(column.headerId)) {
+                            selectColumns.Add(String.Format("det.dlwr4 AS \"{0}\"", headers[column.headerId].Description));
+                            innerSelectColumns.Add("d.dlwr4");
+                            includedHeaders.Add(column.headerId);
+                        }
+
+                        if(column.entryField.Text != "") {
+                            whereClauses.Add(String.Format("(UPPER(TRIM(d.dlwr4)) {0} {1})", comparisonValue, entryValue));
+                        }
+                        break;
+                    case HeaderId.COLOR1:
+                        if(!includedHeaders.Contains(column.headerId)) {
+                            selectColumns.Add(String.Format("det.dclr1 AS \"{0}\"", headers[column.headerId].Description));
+                            innerSelectColumns.Add("d.dclr1");
+                            includedHeaders.Add(column.headerId);
+                        }
+
+                        if(column.entryField.Text != "") {
+                            whereClauses.Add(String.Format("(UPPER(TRIM(d.dclr1)) {0} {1})", comparisonValue, entryValue));
+                        }
+                        break;
+                    case HeaderId.COLOR2:
+                        if(!includedHeaders.Contains(column.headerId)) {
+                            selectColumns.Add(String.Format("det.dclr2 AS \"{0}\"", headers[column.headerId].Description));
+                            innerSelectColumns.Add("d.dclr2");
+                            includedHeaders.Add(column.headerId);
+                        }
+
+                        if(column.entryField.Text != "") {
+                            whereClauses.Add(String.Format("(UPPER(TRIM(d.dclr2)) {0} {1})", comparisonValue, entryValue));
+                        }
+                        break;
+                    case HeaderId.COLOR3:
+                        if(!includedHeaders.Contains(column.headerId)) {
+                            selectColumns.Add(String.Format("det.dclr3 AS \"{0}\"", headers[column.headerId].Description));
+                            innerSelectColumns.Add("d.dclr3");
+                            includedHeaders.Add(column.headerId);
+                        }
+
+                        if(column.entryField.Text != "") {
+                            whereClauses.Add(String.Format("(UPPER(TRIM(d.dclr3)) {0} {1})", comparisonValue, entryValue));
+                        }
+                        break;
+                    case HeaderId.COLOR4:
+                        if(!includedHeaders.Contains(column.headerId)) {
+                            selectColumns.Add(String.Format("det.dclr4 AS \"{0}\"", headers[column.headerId].Description));
+                            innerSelectColumns.Add("d.dclr4");
+                            includedHeaders.Add(column.headerId);
+                        }
+
+                        if(column.entryField.Text != "") {
+                            whereClauses.Add(String.Format("(UPPER(TRIM(d.dclr4)) {0} {1})", comparisonValue, entryValue));
+                        }
+                        break;
+                    case HeaderId.ITEMCLASS:
+                        if(!includedHeaders.Contains(column.headerId)) {
+                            selectColumns.Add(String.Format("det.dclas AS \"{0}\"", headers[column.headerId].Description));
+                            innerSelectColumns.Add("d.dclas");
+                            includedHeaders.Add(column.headerId);
+                        }
+
+                        if(column.entryField.Text != "") {
+                            whereClauses.Add(String.Format("(UPPER(TRIM(d.dclas)) {0} {1})", comparisonValue, entryValue));
+                        }
+                        break;
+                    case HeaderId.LATEREASON:
+                        if(!includedHeaders.Contains(column.headerId)) {
+                            selectColumns.Add(String.Format("det.dlrea AS \"{0}\"", headers[column.headerId].Description));
+                            innerSelectColumns.Add("d.dlrea");
+                            includedHeaders.Add(column.headerId);
+                        }
+
+                        if(column.entryField.Text != "") {
+                            whereClauses.Add(String.Format("(UPPER(TRIM(d.dlrea)) {0} {1})", comparisonValue, entryValue));
                         }
                         break;
                     default:
@@ -179,14 +393,23 @@ namespace VarsityReportingTool {
                 combinedInnerSelectColumns += ", " + innerSelectColumns[i];
             }
 
-            string combinedWhereClause = whereClauses[0];
-            for(int i = 1; i != whereClauses.Count; ++i) {
-                combinedWhereClause += " AND " + whereClauses[i];
+            string combinedWhereClause = "";
+            if(whereClauses.Count > 0) {
+                combinedWhereClause = "WHERE " + whereClauses[0];
+                for(int i = 1; i != whereClauses.Count; ++i) {
+                    combinedWhereClause += " AND " + whereClauses[i];
+                }
             }
 
-            string query = String.Format("SELECT {0} FROM ( SELECT {1} FROM VARSITYF.DETAIL AS d WHERE {2}) AS det {3}",
-                                         combinedSelectColumns, combinedInnerSelectColumns, combinedWhereClause, "" /* joins*/);
+            string combinedJoins = "";
+            foreach(string j in joins) {
+                combinedJoins += j + '\n';
+            }
 
+            string query = String.Format("SELECT {0} FROM ( SELECT {1} FROM VARSITYF.DETAIL AS d {2}) AS det {3}",
+                                         combinedSelectColumns, combinedInnerSelectColumns, combinedWhereClause, combinedJoins);
+
+            // TODO(adam): allow setting sort field(s)
             // default sort by style code
             //query += " ORDER BY det.ditem";
             return query;
@@ -237,11 +460,12 @@ namespace VarsityReportingTool {
                 this.panel.Controls.Add(this.label);
 
                 // headerId dropdown
+                List<ColumnHeader> headerList = headers.Values.ToList();
+                headerList.Sort((h1, h2) => (h1.Description.CompareTo(h2.Description)));
                 this.headerComboBox = new ComboBox();
                 this.headerComboBox.FormattingEnabled = true;
                 this.headerComboBox.Size = new System.Drawing.Size(95, 21);
-                // TODO: unique values only?
-                this.headerComboBox.DataSource = headers.Values.ToList();
+                this.headerComboBox.DataSource = headerList;
                 this.headerComboBox.DisplayMember = "Description";
                 this.headerComboBox.ValueMember = "Id";
                 this.headerComboBox.SelectedIndexChanged += new System.EventHandler(headerComboBox_SelectedIndexChanged);
@@ -251,6 +475,7 @@ namespace VarsityReportingTool {
                 this.comparisonComboBox = new ComboBox();
                 this.comparisonComboBox.Size = new System.Drawing.Size(74, 21);
                 this.comparisonComboBox.DataSource = comparisons[HeaderType.String].ToList();
+                this.comparisonComboBox.SelectedIndexChanged += new System.EventHandler(comparisonComboBox_SelectedIndexChanged);
                 this.panel.Controls.Add(this.comparisonComboBox);
 
                 // entry field
@@ -362,6 +587,11 @@ namespace VarsityReportingTool {
                 }
 
                 headerId = newHeaderId;
+                panel.Focus();
+            }
+
+            private void comparisonComboBox_SelectedIndexChanged(object sender, EventArgs e) {
+                panel.Focus();
             }
 
             // allow only numbers, comma, or period in entry field
