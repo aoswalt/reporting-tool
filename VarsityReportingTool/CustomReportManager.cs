@@ -415,6 +415,19 @@ namespace VarsityReportingTool {
             return query;
         }
 
+        public void ClearEntries() {
+            foreach(Column c in customReportColumns) {
+                if(headers[c.headerId].Type == HeaderType.Date) {
+                    DateTimePicker entry = ((DateTimePicker)c.entryField);
+                    entry.Value = DateTime.Today;
+                    entry.Checked = false;
+                } else {
+                    TextBox entry = ((TextBox)c.entryField);
+                    entry.Text = "";
+                }
+            }
+        }
+
         private class ColumnHeader {
             public HeaderId Id { get; private set; }
             public string Description { get; private set; }
@@ -479,7 +492,7 @@ namespace VarsityReportingTool {
                 this.panel.Controls.Add(this.comparisonComboBox);
 
                 // entry field
-                this.entryField = new TextBox();
+                this.entryField = new TextBox();    // TODO(adam): prevent commas without "IN" comparison, MaskedTextBox?
                 this.entryField.Size = new System.Drawing.Size(118, 20);
                 this.panel.Controls.Add(this.entryField);
 

@@ -411,7 +411,7 @@ namespace VarsityReportingTool {
         }
 
         private void btnRunCustomReport_Click(object sender, EventArgs e) {
-            btnRunQuery.Enabled = false;
+            this.btnRunCustomReport.Enabled = false;
 
             string query = customReports.GenerateQuery();
 
@@ -421,11 +421,12 @@ namespace VarsityReportingTool {
 
             runQuery(query);
 
-            btnRunQuery.Enabled = true;
+            this.btnRunCustomReport.Enabled = true;
             this.cutomReportColumnsFlowPanel.Focus();
         }
 
         private void btnClearCustomEntries_Click(object sender, EventArgs e) {
+            customReports.ClearEntries();
             this.cutomReportColumnsFlowPanel.Focus();
         }
 
