@@ -479,5 +479,9 @@ namespace VarsityReportingTool {
 
             btnOpenInExcel.Enabled = true;
         }
+
+        private void FocusOnMouseEnter(object sender, EventArgs e) {
+            ((Control)sender).Focus();
+        }
     }
 }

@@ -62,6 +62,7 @@
             this.txtQuery = new System.Windows.Forms.RichTextBox();
             this.btnRunQuery = new System.Windows.Forms.Button();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.label13 = new System.Windows.Forms.Label();
             this.btnRemoveColumn = new System.Windows.Forms.Button();
             this.btnAddColumn = new System.Windows.Forms.Button();
             this.chkCustomLimitRows = new System.Windows.Forms.CheckBox();
@@ -76,7 +77,6 @@
             this.btnOpenInExcel = new System.Windows.Forms.Button();
             this.btnCopyAll = new System.Windows.Forms.Button();
             this.dataGrid = new System.Windows.Forms.DataGridView();
-            this.label13 = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.reportTabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -471,6 +471,7 @@
             this.txtQuery.TabIndex = 32;
             this.txtQuery.Text = "";
             this.txtQuery.WordWrap = false;
+            this.txtQuery.MouseEnter += new System.EventHandler(this.FocusOnMouseEnter);
             // 
             // btnRunQuery
             // 
@@ -498,6 +499,15 @@
             this.tabPage3.Size = new System.Drawing.Size(556, 171);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Custom";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(5, 66);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(126, 39);
+            this.label13.TabIndex = 39;
+            this.label13.Text = "Click the column number \r\nlabels to select/deselect \r\na row.";
             // 
             // btnRemoveColumn
             // 
@@ -546,6 +556,7 @@
             this.cutomReportColumnsFlowPanel.TabIndex = 0;
             this.cutomReportColumnsFlowPanel.WrapContents = false;
             this.cutomReportColumnsFlowPanel.Click += new System.EventHandler(this.cutomReportColumnsFlowPanel_Click);
+            this.cutomReportColumnsFlowPanel.MouseEnter += new System.EventHandler(this.FocusOnMouseEnter);
             // 
             // panelCustomReportGeneralButtons
             // 
@@ -672,15 +683,7 @@
             this.dataGrid.RowHeadersVisible = false;
             this.dataGrid.Size = new System.Drawing.Size(556, 298);
             this.dataGrid.TabIndex = 0;
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(5, 66);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(126, 39);
-            this.label13.TabIndex = 39;
-            this.label13.Text = "Click the column number \r\nlabels to select/deselect \r\na row.";
+            this.dataGrid.MouseEnter += new System.EventHandler(this.FocusOnMouseEnter);
             // 
             // MainWindow
             // 
