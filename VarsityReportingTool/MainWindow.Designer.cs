@@ -66,7 +66,7 @@
             this.btnAddColumn = new System.Windows.Forms.Button();
             this.chkCustomLimitRows = new System.Windows.Forms.CheckBox();
             this.cutomReportColumnsFlowPanel = new System.Windows.Forms.FlowLayoutPanel();
-            this.panel3 = new System.Windows.Forms.Panel();
+            this.panelCustomReportGeneralButtons = new System.Windows.Forms.Panel();
             this.btnRunCustomReport = new System.Windows.Forms.Button();
             this.btnClearCustomEntries = new System.Windows.Forms.Button();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
@@ -76,13 +76,14 @@
             this.btnOpenInExcel = new System.Windows.Forms.Button();
             this.btnCopyAll = new System.Windows.Forms.Button();
             this.dataGrid = new System.Windows.Forms.DataGridView();
+            this.label13 = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.reportTabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.tabPage3.SuspendLayout();
-            this.panel3.SuspendLayout();
+            this.panelCustomReportGeneralButtons.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -485,11 +486,12 @@
             // tabPage3
             // 
             this.tabPage3.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPage3.Controls.Add(this.label13);
             this.tabPage3.Controls.Add(this.btnRemoveColumn);
             this.tabPage3.Controls.Add(this.btnAddColumn);
             this.tabPage3.Controls.Add(this.chkCustomLimitRows);
             this.tabPage3.Controls.Add(this.cutomReportColumnsFlowPanel);
-            this.tabPage3.Controls.Add(this.panel3);
+            this.tabPage3.Controls.Add(this.panelCustomReportGeneralButtons);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
@@ -500,21 +502,21 @@
             // btnRemoveColumn
             // 
             this.btnRemoveColumn.Enabled = false;
-            this.btnRemoveColumn.Location = new System.Drawing.Point(11, 31);
+            this.btnRemoveColumn.Location = new System.Drawing.Point(25, 31);
             this.btnRemoveColumn.Name = "btnRemoveColumn";
-            this.btnRemoveColumn.Size = new System.Drawing.Size(75, 23);
+            this.btnRemoveColumn.Size = new System.Drawing.Size(94, 23);
             this.btnRemoveColumn.TabIndex = 38;
-            this.btnRemoveColumn.Text = "Remove";
+            this.btnRemoveColumn.Text = "Remove Column";
             this.btnRemoveColumn.UseVisualStyleBackColor = true;
             this.btnRemoveColumn.Click += new System.EventHandler(this.btnRemoveColumn_Click);
             // 
             // btnAddColumn
             // 
-            this.btnAddColumn.Location = new System.Drawing.Point(11, 6);
+            this.btnAddColumn.Location = new System.Drawing.Point(25, 6);
             this.btnAddColumn.Name = "btnAddColumn";
-            this.btnAddColumn.Size = new System.Drawing.Size(75, 23);
+            this.btnAddColumn.Size = new System.Drawing.Size(94, 23);
             this.btnAddColumn.TabIndex = 32;
-            this.btnAddColumn.Text = "Add";
+            this.btnAddColumn.Text = "Add Column";
             this.btnAddColumn.UseVisualStyleBackColor = true;
             this.btnAddColumn.Click += new System.EventHandler(this.btnAddColumn_Click);
             // 
@@ -545,18 +547,19 @@
             this.cutomReportColumnsFlowPanel.WrapContents = false;
             this.cutomReportColumnsFlowPanel.Click += new System.EventHandler(this.cutomReportColumnsFlowPanel_Click);
             // 
-            // panel3
+            // panelCustomReportGeneralButtons
             // 
-            this.panel3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.panel3.Controls.Add(this.btnRunCustomReport);
-            this.panel3.Controls.Add(this.btnClearCustomEntries);
-            this.panel3.Location = new System.Drawing.Point(171, 140);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(203, 31);
-            this.panel3.TabIndex = 31;
+            this.panelCustomReportGeneralButtons.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.panelCustomReportGeneralButtons.Controls.Add(this.btnRunCustomReport);
+            this.panelCustomReportGeneralButtons.Controls.Add(this.btnClearCustomEntries);
+            this.panelCustomReportGeneralButtons.Location = new System.Drawing.Point(171, 140);
+            this.panelCustomReportGeneralButtons.Name = "panelCustomReportGeneralButtons";
+            this.panelCustomReportGeneralButtons.Size = new System.Drawing.Size(203, 31);
+            this.panelCustomReportGeneralButtons.TabIndex = 31;
             // 
             // btnRunCustomReport
             // 
+            this.btnRunCustomReport.Enabled = false;
             this.btnRunCustomReport.Location = new System.Drawing.Point(3, 5);
             this.btnRunCustomReport.Name = "btnRunCustomReport";
             this.btnRunCustomReport.Size = new System.Drawing.Size(90, 23);
@@ -568,6 +571,7 @@
             // btnClearCustomEntries
             // 
             this.btnClearCustomEntries.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnClearCustomEntries.Enabled = false;
             this.btnClearCustomEntries.Location = new System.Drawing.Point(109, 5);
             this.btnClearCustomEntries.Name = "btnClearCustomEntries";
             this.btnClearCustomEntries.Size = new System.Drawing.Size(90, 23);
@@ -669,6 +673,15 @@
             this.dataGrid.Size = new System.Drawing.Size(556, 298);
             this.dataGrid.TabIndex = 0;
             // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(5, 66);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(126, 39);
+            this.label13.TabIndex = 39;
+            this.label13.Text = "Click the column number \r\nlabels to select/deselect \r\na row.";
+            // 
             // MainWindow
             // 
             this.AcceptButton = this.btnRunOrderReport;
@@ -692,7 +705,7 @@
             this.tabPage2.PerformLayout();
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
-            this.panel3.ResumeLayout(false);
+            this.panelCustomReportGeneralButtons.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             this.splitContainer1.Panel2.PerformLayout();
@@ -754,12 +767,13 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.CheckBox chkCustomLimitRows;
-        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.Panel panelCustomReportGeneralButtons;
         private System.Windows.Forms.Button btnRunCustomReport;
         private System.Windows.Forms.Button btnClearCustomEntries;
         private System.Windows.Forms.FlowLayoutPanel cutomReportColumnsFlowPanel;
         private System.Windows.Forms.Button btnRemoveColumn;
         private System.Windows.Forms.Button btnAddColumn;
+        private System.Windows.Forms.Label label13;
     }
 }
 

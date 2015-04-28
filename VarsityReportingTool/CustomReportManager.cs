@@ -56,6 +56,8 @@ namespace VarsityReportingTool {
             customReportColumns.Add(new Column(this, customReportColumns.Count));
             columnsPanel.Controls.Add(customReportColumns.Last().getPanel());
             UpdateColumns();
+            this.columnsPanel.Parent.Controls["panelCustomReportGeneralButtons"].Controls["btnRunCustomReport"].Enabled = true;
+            this.columnsPanel.Parent.Controls["panelCustomReportGeneralButtons"].Controls["btnClearCustomEntries"].Enabled = true;
         }
 
         public void RemoveColumn() {
@@ -66,6 +68,10 @@ namespace VarsityReportingTool {
                 ((Button)this.columnsPanel.Parent.Controls["btnRemoveColumn"]).Enabled = false;
             }
             UpdateColumns();
+            if(customReportColumns.Count == 0) {
+                this.columnsPanel.Parent.Controls["panelCustomReportGeneralButtons"].Controls["btnRunCustomReport"].Enabled = false;
+                this.columnsPanel.Parent.Controls["panelCustomReportGeneralButtons"].Controls["btnClearCustomEntries"].Enabled = false;
+            }
         }
 
         public void UpdateColumns() {
