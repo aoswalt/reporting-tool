@@ -471,11 +471,13 @@
             this.txtQuery.TabIndex = 32;
             this.txtQuery.Text = "";
             this.txtQuery.WordWrap = false;
+            this.txtQuery.TextChanged += new System.EventHandler(this.txtQuery_TextChanged);
             this.txtQuery.MouseEnter += new System.EventHandler(this.FocusOnMouseEnter);
             // 
             // btnRunQuery
             // 
             this.btnRunQuery.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.btnRunQuery.Enabled = false;
             this.btnRunQuery.Location = new System.Drawing.Point(227, 145);
             this.btnRunQuery.Name = "btnRunQuery";
             this.btnRunQuery.Size = new System.Drawing.Size(90, 23);

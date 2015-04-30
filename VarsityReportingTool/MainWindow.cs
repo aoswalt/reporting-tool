@@ -377,6 +377,14 @@ namespace VarsityReportingTool {
         // Query Page
         // ====================
 
+        private void txtQuery_TextChanged(object sender, EventArgs e) {
+            if(this.txtQuery.TextLength == 0) {
+                this.btnRunQuery.Enabled = false;
+            } else {
+                this.btnRunQuery.Enabled = true;
+            }
+        }
+
         private void btnRunQuery_Click(object sender, EventArgs e) {
             btnRunQuery.Enabled = false;
 
