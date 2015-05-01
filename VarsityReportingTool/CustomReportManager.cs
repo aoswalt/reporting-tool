@@ -103,6 +103,7 @@ namespace VarsityReportingTool {
         }
 
         public bool InsertColumn(string headerIdString, string comparisonString, string entryString) {
+            // TODO(adam): remove try/catch when finished developing
             //try {
                 Column column = new Column(this, customReportColumns.Count);
                 column.headerId = (HeaderId)Enum.Parse(typeof(HeaderId), headerIdString);
