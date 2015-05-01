@@ -357,12 +357,18 @@ namespace VarsityReportingTool {
             query +=
               @"ORDER BY det.ditem";
 
-            // row limit option
-            if(chkOrderLimitRows.Checked) {
-                query += String.Format(@" FETCH FIRST {0} ROWS ONLY", RowLimitAmount);
-            }
+            if(ModifierKeys == Keys.Control) {
+                txtQuery.Text = query;
+                reportTabControl.SelectTab(1);
+                btnRunQuery.Enabled = true;
+            } else {
+                // row limit option
+                if(chkOrderLimitRows.Checked) {
+                    query += String.Format(@" FETCH FIRST {0} ROWS ONLY", RowLimitAmount);
+                }
 
-            runQuery(query);
+                runQuery(query);
+            }
 
             btnRunOrderReport.Enabled = true;
         }
@@ -439,14 +445,21 @@ namespace VarsityReportingTool {
 
             string query = customReports.GenerateQuery();
 
-            if(chkCustomLimitRows.Checked) {
-                query += String.Format(@" FETCH FIRST {0} ROWS ONLY", RowLimitAmount);
+            // copy query to query tab if Control used
+            if(ModifierKeys == Keys.Control) {
+                txtQuery.Text = query;
+                reportTabControl.SelectTab(1);
+                btnRunQuery.Enabled = true;
+            } else {
+                if(chkCustomLimitRows.Checked) {
+                    query += String.Format(@" FETCH FIRST {0} ROWS ONLY", RowLimitAmount);
+                }
+
+                runQuery(query);
+                this.cutomReportColumnsFlowPanel.Focus();
             }
 
-            runQuery(query);
-
             this.btnRunCustomReport.Enabled = true;
-            this.cutomReportColumnsFlowPanel.Focus();
         }
 
         private void btnClearCustomEntries_Click(object sender, EventArgs e) {
