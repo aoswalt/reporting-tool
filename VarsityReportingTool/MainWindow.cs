@@ -156,7 +156,7 @@ namespace VarsityReportingTool {
             btnRunOrderReport.Enabled = false;
 
             // assemble query from filled components
-            // TODO(adam): clean up query by using headers from CustomReportManager
+            // TODO(adam): rework query by using headers from CustomReportManager
             string query =
                "SELECT det.dhous AS \"House\", det.scdat AS \"Schedule Date\", det.endat AS \"Order Date\", " +
                     "det.ordnr AS \"Order Number\", det.orvch AS \"Voucher\", " +

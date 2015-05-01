@@ -321,7 +321,7 @@ namespace VarsityReportingTool {
                         }
 
                         if(column.entryField.Text != "") {
-                            whereClauses.Add(String.Format("(d.dlsiz {0} {1})", comparisonValue, entryValue));
+                            whereClauses.Add(String.Format("(TRIM(d.dlsiz) {0} {1})", comparisonValue, entryValue));
                         }
                         break;
                     case HeaderId.WORD1:
@@ -332,7 +332,7 @@ namespace VarsityReportingTool {
                         }
 
                         if(column.entryField.Text != "") {
-                            whereClauses.Add(String.Format("(UPPER(TRIM(d.dlwr1)) {0} {1})", comparisonValue, entryValue));
+                            whereClauses.Add(String.Format("(TRIM(d.dlwr1) {0} {1})", comparisonValue, entryValue));
                         }
                         break;
                     case HeaderId.WORD2:
@@ -343,7 +343,7 @@ namespace VarsityReportingTool {
                         }
 
                         if(column.entryField.Text != "") {
-                            whereClauses.Add(String.Format("(UPPER(TRIM(d.dlwr2)) {0} {1})", comparisonValue, entryValue));
+                            whereClauses.Add(String.Format("(TRIM(d.dlwr2) {0} {1})", comparisonValue, entryValue));
                         }
                         break;
                     case HeaderId.WORD3:
@@ -354,7 +354,7 @@ namespace VarsityReportingTool {
                         }
 
                         if(column.entryField.Text != "") {
-                            whereClauses.Add(String.Format("(UPPER(TRIM(d.dlwr3)) {0} {1})", comparisonValue, entryValue));
+                            whereClauses.Add(String.Format("(TRIM(d.dlwr3) {0} {1})", comparisonValue, entryValue));
                         }
                         break;
                     case HeaderId.WORD4:
@@ -365,7 +365,7 @@ namespace VarsityReportingTool {
                         }
 
                         if(column.entryField.Text != "") {
-                            whereClauses.Add(String.Format("(UPPER(TRIM(d.dlwr4)) {0} {1})", comparisonValue, entryValue));
+                            whereClauses.Add(String.Format("(TRIM(d.dlwr4) {0} {1})", comparisonValue, entryValue));
                         }
                         break;
                     case HeaderId.COLOR1:
