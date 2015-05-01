@@ -77,6 +77,8 @@
             this.btnOpenInExcel = new System.Windows.Forms.Button();
             this.btnCopyAll = new System.Windows.Forms.Button();
             this.dataGrid = new System.Windows.Forms.DataGridView();
+            this.saveReportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.loadReportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.reportTabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -105,6 +107,8 @@
             // fileToolStripMenuItem
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.saveReportToolStripMenuItem,
+            this.loadReportToolStripMenuItem,
             this.toolStripSeparator1,
             this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
@@ -687,6 +691,20 @@
             this.dataGrid.TabIndex = 0;
             this.dataGrid.MouseEnter += new System.EventHandler(this.FocusOnMouseEnter);
             // 
+            // saveReportToolStripMenuItem
+            // 
+            this.saveReportToolStripMenuItem.Name = "saveReportToolStripMenuItem";
+            this.saveReportToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.saveReportToolStripMenuItem.Text = "Save Report";
+            this.saveReportToolStripMenuItem.Click += new System.EventHandler(this.saveReportToolStripMenuItem_Click);
+            // 
+            // loadReportToolStripMenuItem
+            // 
+            this.loadReportToolStripMenuItem.Name = "loadReportToolStripMenuItem";
+            this.loadReportToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.loadReportToolStripMenuItem.Text = "Load Report";
+            this.loadReportToolStripMenuItem.Click += new System.EventHandler(this.loadReportToolStripMenuItem_Click);
+            // 
             // MainWindow
             // 
             this.AcceptButton = this.btnRunOrderReport;
@@ -779,6 +797,8 @@
         private System.Windows.Forms.Button btnRemoveColumn;
         private System.Windows.Forms.Button btnAddColumn;
         private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.ToolStripMenuItem saveReportToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem loadReportToolStripMenuItem;
     }
 }
 

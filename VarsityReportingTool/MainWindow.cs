@@ -99,6 +99,18 @@ namespace VarsityReportingTool {
         // Menu
         // ====================
 
+        private void saveReportToolStripMenuItem_Click(object sender, EventArgs e) {
+
+        }
+
+        private void loadReportToolStripMenuItem_Click(object sender, EventArgs e) {
+            // query
+
+            // custom report
+            this.customReports.ClearColumns();
+            customReports.InsertColumn("HOUSE", "comparisonString", "entryString");
+        }
+
         private void exitToolStripMenuItem_Click(object sender, EventArgs e) {
             this.Close();
         }
@@ -144,11 +156,15 @@ namespace VarsityReportingTool {
             btnRunOrderReport.Enabled = false;
 
             // assemble query from filled components
-            string query = @"
-                SELECT det.dhous, det.scdat, det.endat, det.ordnr, det.orvch, 
-                    det.ditem, det.dlsiz, siz.letwid, nam.letname, 
-                    det.dlwr1, det.dlwr2, det.dlwr3, det.dlwr4, det.dclr1, det.dclr2, det.dclr3, det.dclr4, det.rudat
-                FROM (
+            // TODO(adam): clean up query by using headers from CustomReportManager
+            string query =
+               "SELECT det.dhous AS \"House\", det.scdat AS \"Schedule Date\", det.endat AS \"Order Date\", " +
+                    "det.ordnr AS \"Order Number\", det.orvch AS \"Voucher\", " +
+                    "det.ditem AS \"Style Code\", det.dlsiz AS \"Size\", siz.letwid AS \"Spec\", nam.letname AS \"Name\", " +
+                    "TRIM(det.dlwr1) AS \"Word 1\", TRIM(det.dlwr2) AS \"Word 2\", TRIM(det.dlwr3) AS \"Word 3\", TRIM(det.dlwr4) AS \"Word 4\", " +
+                    "TRIM(det.dclr1) AS \"Color 1\", TRIM(det.dclr2) AS \"Color 2\", TRIM(det.dclr3) AS \"Color 3\", TRIM(det.dclr4) AS \"Color 4\", " +
+                    "det.rudat AS \"Rush Date\"" +
+              @"FROM (
                     SELECT d.dhous,
                             CASE WHEN d.dscmo = 0 THEN NULL ELSE DATE(d.dsccy||d.dscyr||'-'||RIGHT('00'||d.dscmo, 2)||'-'||RIGHT('00'||d.dscda, 2)) END AS scdat,
                             DATE(d.dorcy||d.doryr||'-'||RIGHT('00'||d.dormo, 2)||'-'||RIGHT('00'||d.dorda, 2)) AS endat,

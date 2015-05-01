@@ -60,6 +60,14 @@ namespace VarsityReportingTool {
             this.columnsPanel.Parent.Controls["panelCustomReportGeneralButtons"].Controls["btnClearCustomEntries"].Enabled = true;
         }
 
+        private void AddColumn(Column newColumn) {
+            customReportColumns.Add(newColumn);
+            columnsPanel.Controls.Add(newColumn.getPanel());
+            UpdateColumns();
+            this.columnsPanel.Parent.Controls["panelCustomReportGeneralButtons"].Controls["btnRunCustomReport"].Enabled = true;
+            this.columnsPanel.Parent.Controls["panelCustomReportGeneralButtons"].Controls["btnClearCustomEntries"].Enabled = true;
+        }
+
         public void RemoveColumn() {
             if(selectedColumn != null) {
                 customReportColumns.Remove(selectedColumn);
@@ -86,6 +94,48 @@ namespace VarsityReportingTool {
             }
         }
 
+        public void ClearColumns() {
+            customReportColumns.Clear();
+            columnsPanel.Controls.Clear();
+            UpdateColumns();
+            this.columnsPanel.Parent.Controls["panelCustomReportGeneralButtons"].Controls["btnRunCustomReport"].Enabled = false;
+            this.columnsPanel.Parent.Controls["panelCustomReportGeneralButtons"].Controls["btnClearCustomEntries"].Enabled = false;
+        }
+
+        public bool InsertColumn(string headerIdString, string comparisonString, string entryString) {
+            //try {
+                Column column = new Column(this, customReportColumns.Count);
+                column.headerId = (HeaderId)Enum.Parse(typeof(HeaderId), headerIdString);
+                column.headerComboBox.SelectedIndex = column.headerComboBox.FindStringExact(headers[column.headerId].Description);
+                column.headerComboBox.SelectedText = headers[column.headerId].Description;
+                column.headerComboBox_SelectedIndexChanged(null, null);
+
+                column.comparisonComboBox.SelectedText = comparisonString;
+
+                if(entryString.Length > 0) {
+                    if(headers[column.headerId].Type == HeaderType.Date) {
+                        column.entryField = new DateTimePicker();
+                        ((DateTimePicker)column.entryField).Value = DateTime.Parse(entryString);
+                        ((DateTimePicker)column.entryField).Checked = true;
+                    } else {
+                        column.entryField.Text = entryString;
+                    }
+                }
+
+                customReportColumns.Add(column);
+                columnsPanel.Controls.Add(column.getPanel());
+                UpdateColumns();
+                this.columnsPanel.Parent.Controls["panelCustomReportGeneralButtons"].Controls["btnRunCustomReport"].Enabled = true;
+                this.columnsPanel.Parent.Controls["panelCustomReportGeneralButtons"].Controls["btnClearCustomEntries"].Enabled = true;
+
+                return true;
+            /*
+            } catch(Exception) {
+                return false;
+            }
+             */
+        }
+
         private void SelectColumn(Column column) {
             if(selectedColumn != null) {
                 selectedColumn.setSelected(false);
@@ -107,7 +157,7 @@ namespace VarsityReportingTool {
 
         private string getEntryValue(Column column) {
             string entry = "";
-            string comparisonValue = ((string)column.comparisonComboBox.SelectedValue);
+            string comparisonValue = column.comparisonComboBox.SelectedText;
 
             switch(headers[column.headerId].Type) {
                 case HeaderType.Date: {
@@ -147,7 +197,7 @@ namespace VarsityReportingTool {
             List<string> whereClauses = new List<string>();
             List<string> joins = new List<string>();
 
-            // sort columns based on order on form
+            // NOTE(adam): sorting columns based on order on form
             customReportColumns.Sort(
                 (c1, c2) => 
                     (c1.getPanel().Parent.Controls.GetChildIndex(c1.getPanel()).CompareTo(c2.getPanel().Parent.Controls.GetChildIndex(c2.getPanel()))));
@@ -448,12 +498,12 @@ namespace VarsityReportingTool {
 
         private class Column {
             public HeaderId headerId;
+            public ComboBox headerComboBox;
             public ComboBox comparisonComboBox;
             public Control entryField;
             private CustomReportManager manager;
             private FlowLayoutPanel panel;
             private Label label;
-            private ComboBox headerComboBox;
             private Button moveUpButton;
             private Button moveDownButton;
             private bool selected;
@@ -488,6 +538,7 @@ namespace VarsityReportingTool {
                 this.headerComboBox.DisplayMember = "Description";
                 this.headerComboBox.ValueMember = "Id";
                 this.headerComboBox.SelectedIndexChanged += new System.EventHandler(headerComboBox_SelectedIndexChanged);
+                headerId = headerList[0].Id;    // NOTE(adam): set headerID to first value in list to match ComboBox
                 this.panel.Controls.Add(this.headerComboBox);
 
                 // compare dropdown
@@ -557,7 +608,7 @@ namespace VarsityReportingTool {
                 manager.SelectColumn(this);
             }
 
-            private void headerComboBox_SelectedIndexChanged(object sender, EventArgs e) {
+            public void headerComboBox_SelectedIndexChanged(object sender, EventArgs e) {
                 HeaderId newHeaderId = (HeaderId)Enum.Parse(typeof(HeaderId), this.headerComboBox.SelectedValue.ToString());
 
                 if(headerId != newHeaderId) {
@@ -613,7 +664,7 @@ namespace VarsityReportingTool {
                 panel.Focus();
             }
 
-            // allow only numbers, comma, or period in entry field
+            // NOTE(adam): allow only numbers, comma, or period in entry field
             private void entryField_Decimal_KeyPress(object sender, KeyPressEventArgs e) {
                 if(!Char.IsDigit(e.KeyChar) && !Char.IsControl(e.KeyChar) && !(e.KeyChar == '.') && !(e.KeyChar == ',')) {
                     e.Handled = true;
@@ -621,7 +672,7 @@ namespace VarsityReportingTool {
                 }
             }
 
-            // allow only numbers or comma in entry field
+            // NOTE(adam): allow only numbers or comma in entry field
             private void entryField_Integer_KeyPress(object sender, KeyPressEventArgs e) {
                 if(!Char.IsDigit(e.KeyChar) && !Char.IsControl(e.KeyChar) && !(e.KeyChar == ',')) {
                     e.Handled = true;
