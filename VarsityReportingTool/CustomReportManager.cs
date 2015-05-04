@@ -105,11 +105,12 @@ namespace VarsityReportingTool {
         public bool InsertColumn(string headerIdString, string comparisonString, string entryString) {
             // TODO(adam): remove try/catch when finished developing
             //try {
-                Column column = new Column(this, customReportColumns.Count);
+            Column column = new Column(this, customReportColumns.Count);
+            customReportColumns.Add(column);
+            columnsPanel.Controls.Add(column.getPanel());
                 column.headerId = (HeaderId)Enum.Parse(typeof(HeaderId), headerIdString);
                 column.headerComboBox.SelectedIndex = column.headerComboBox.FindStringExact(headers[column.headerId].Description);
-                column.headerComboBox.SelectedText = headers[column.headerId].Description;
-                column.headerComboBox_SelectedIndexChanged(null, null);
+                //column.headerComboBox_SelectedIndexChanged(null, null);
 
                 column.comparisonComboBox.SelectedText = comparisonString;
 
@@ -123,8 +124,6 @@ namespace VarsityReportingTool {
                     }
                 }
 
-                customReportColumns.Add(column);
-                columnsPanel.Controls.Add(column.getPanel());
                 UpdateColumns();
                 this.columnsPanel.Parent.Controls["panelCustomReportGeneralButtons"].Controls["btnRunCustomReport"].Enabled = true;
                 this.columnsPanel.Parent.Controls["panelCustomReportGeneralButtons"].Controls["btnClearCustomEntries"].Enabled = true;

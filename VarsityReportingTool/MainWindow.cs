@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Data.Odbc;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -108,7 +110,7 @@ namespace VarsityReportingTool {
 
             // custom report
             this.customReports.ClearColumns();
-            customReports.InsertColumn("HOUSE", "comparisonString", "entryString");
+            customReports.InsertColumn("HOUSE", "NOT LIKE", "entryString");
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e) {
@@ -493,7 +495,15 @@ namespace VarsityReportingTool {
 
             try {
                 Excel.Application xlApp = new Excel.Application();
-                Excel.Workbook xlWorkBook = xlApp.Workbooks.Add();
+                xlApp.Visible = true;
+                try {
+                    // NOTE(adam): testing for multiple extensions
+                    xlApp.Workbooks.Open(xlApp.StartupPath + "\\personal.xlsb");
+                    xlApp.Workbooks.Open(xlApp.StartupPath + "\\personal.xls");
+                } catch(Exception) {
+
+                }
+                xlApp.Workbooks.Add();
 
 
                 dataGrid.SelectAll();
@@ -509,7 +519,7 @@ namespace VarsityReportingTool {
                 xlApp.Columns.WrapText = false;
                 xlApp.Columns.AutoFit();
                 xlApp.Rows.AutoFit();
-                xlApp.Visible = true;
+                xlApp.ActiveSheet.Range("A1").Select();
             } catch(Exception ex) {
                 MessageBox.Show("Error opening in Excel.\n\n" + ex.Message, "Error");
             }
