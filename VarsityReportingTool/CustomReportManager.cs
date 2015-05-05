@@ -105,30 +105,30 @@ namespace VarsityReportingTool {
         public bool InsertColumn(string headerIdString, string comparisonString, string entryString) {
             // TODO(adam): remove try/catch when finished developing
             //try {
+            ((TabControl)columnsPanel.Parent.Parent).SelectTab(MainWindow.CUSTOM_TAB);      // NOTE(adam): doesn't work if tab not active
+
             Column column = new Column(this, customReportColumns.Count);
             customReportColumns.Add(column);
             columnsPanel.Controls.Add(column.getPanel());
-                column.headerId = (HeaderId)Enum.Parse(typeof(HeaderId), headerIdString);
-                column.headerComboBox.SelectedIndex = column.headerComboBox.FindStringExact(headers[column.headerId].Description);
-                //column.headerComboBox_SelectedIndexChanged(null, null);
+            HeaderId newHeaderId = (HeaderId)Enum.Parse(typeof(HeaderId), headerIdString);
 
-                column.comparisonComboBox.SelectedText = comparisonString;
+            column.headerComboBox.SelectedIndex = column.headerComboBox.FindStringExact(headers[newHeaderId].Description);
+            column.comparisonComboBox.SelectedIndex = column.comparisonComboBox.FindStringExact(comparisonString);
 
-                if(entryString.Length > 0) {
-                    if(headers[column.headerId].Type == HeaderType.Date) {
-                        column.entryField = new DateTimePicker();
-                        ((DateTimePicker)column.entryField).Value = DateTime.Parse(entryString);
-                        ((DateTimePicker)column.entryField).Checked = true;
-                    } else {
-                        column.entryField.Text = entryString;
-                    }
+            if(entryString.Length > 0) {
+                if(headers[column.headerId].Type == HeaderType.Date) {
+                    ((DateTimePicker)column.entryField).Value = DateTime.Parse(entryString);
+                    ((DateTimePicker)column.entryField).Checked = true;
+                } else {
+                    column.entryField.Text = entryString;
                 }
+            }
 
-                UpdateColumns();
-                this.columnsPanel.Parent.Controls["panelCustomReportGeneralButtons"].Controls["btnRunCustomReport"].Enabled = true;
-                this.columnsPanel.Parent.Controls["panelCustomReportGeneralButtons"].Controls["btnClearCustomEntries"].Enabled = true;
+            UpdateColumns();
+            this.columnsPanel.Parent.Controls["panelCustomReportGeneralButtons"].Controls["btnRunCustomReport"].Enabled = true;
+            this.columnsPanel.Parent.Controls["panelCustomReportGeneralButtons"].Controls["btnClearCustomEntries"].Enabled = true;
 
-                return true;
+            return true;
             /*
             } catch(Exception) {
                 return false;
@@ -205,6 +205,12 @@ namespace VarsityReportingTool {
             foreach(Column column in customReportColumns) {
                 string comparisonValue = ((string)column.comparisonComboBox.SelectedValue);
                 string entryValue = getEntryValue(column);
+
+                // include parentheses for IN clauses
+                if(comparisonValue.Contains("IN")) {
+                    if(!entryValue.Contains('(')) { entryValue = '(' + entryValue; }
+                    if(!entryValue.Contains(')')) { entryValue += ')'; }
+                }
 
                 switch(column.headerId) {
                     case HeaderId.HOUSE: 

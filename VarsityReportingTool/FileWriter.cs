@@ -6,5 +6,8 @@ using System.Threading.Tasks;
 
 namespace VarsityReportingTool {
     class FileWriter {
+        public static void SaveReport() {
+
+        }
     }
 }

@@ -14,12 +14,23 @@ using Excel = Microsoft.Office.Interop.Excel;
 
 namespace VarsityReportingTool {
     public partial class MainWindow : Form {
-        public static string ConnectionString = "Driver={iSeries Access ODBC Driver}; System=USC; SignOn=4;";    // using Kerberos
+        public const int ORDER_TAB = 0;
+        public const int QUERY_TAB = 1;
+        public const int CUSTOM_TAB = 2;
+
+        public static string ConnectionString = "Driver={iSeries Access ODBC Driver}; System=USC; SignOn=4;";    // NOTE(adam): using Kerberos
+
+        private static MainWindow windowReference;
         private static int RowLimitAmount = 1000;
         private enum ReportType { All, Cut_Letters, Sew, RH_TS, Sublm_Inline, Sublm_Cust };
         private CustomReportManager customReports;
 
+        public static MainWindow GetReference() {
+            return windowReference;
+        }
+
         public MainWindow() {
+            windowReference = this;
             InitializeComponent();
             this.comboboxReportType.DataSource = Enum.GetNames(typeof(ReportType));
             customReports = new CustomReportManager(this.cutomReportColumnsFlowPanel);
@@ -80,16 +91,16 @@ namespace VarsityReportingTool {
 
         private void reportTabControl_SelectedIndexChanged(object sender, EventArgs e) {
             switch(((TabControl)sender).SelectedIndex) {
-                case 3:     // custom report tab
+                case CUSTOM_TAB:     // custom report tab
                     this.AcceptButton = btnRunCustomReport;
                     this.CancelButton = btnClearCustomEntries;
                     this.cutomReportColumnsFlowPanel.Focus();
                     break;
-                case 2:     // query tab
+                case QUERY_TAB:     // query tab
                     this.AcceptButton = btnRunQuery;
                     this.CancelButton = btnClearOrderEntries;
                     break;
-                case 1:     // order report tab
+                case ORDER_TAB:     // order report tab
                 default:
                     this.AcceptButton = btnRunOrderReport;
                     break;
@@ -102,15 +113,16 @@ namespace VarsityReportingTool {
         // ====================
 
         private void saveReportToolStripMenuItem_Click(object sender, EventArgs e) {
-
+            customReports.InsertColumn("SCHDATE", "=", "");
         }
 
         private void loadReportToolStripMenuItem_Click(object sender, EventArgs e) {
-            // query
+            int tab = FileReader.LoadReport(txtQuery, txtQueryPrompts, customReports);
+            if(tab > 0) {
+                reportTabControl.SelectTab(tab);
 
-            // custom report
-            this.customReports.ClearColumns();
-            customReports.InsertColumn("HOUSE", "NOT LIKE", "entryString");
+                btnRunQuery.Enabled = (txtQuery.Text.Length > 0);
+            }
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e) {
