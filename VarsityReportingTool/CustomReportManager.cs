@@ -52,6 +52,18 @@ namespace VarsityReportingTool {
             this.columnsPanel = columnsPanel;
         }
 
+        public int GetColumnCount() {
+            return customReportColumns.Count;
+        }
+
+        public string GetColumnData(int index) {
+            Column column = customReportColumns[index];
+            string entry;
+
+            return column.headerId.ToString() + ':' + column.comparisonComboBox.SelectedValue + ':' +
+                ((headers[column.headerId].Type == HeaderType.Date && !((DateTimePicker)column.entryField).Checked) ? "" : column.entryField.Text);
+        }
+
         public void AddColumn() {
             customReportColumns.Add(new Column(this, customReportColumns.Count));
             columnsPanel.Controls.Add(customReportColumns.Last().getPanel());

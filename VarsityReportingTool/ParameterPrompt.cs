@@ -13,6 +13,7 @@ namespace VarsityReportingTool {
             DialogResult result = DialogResult.Cancel;
             int parameterCount = parameterCollection.Count;
 
+            // TODO(adam): convert to flow layout with panels
             Form prompt = new Form();
             prompt.Text = "Enter Query Values";
 

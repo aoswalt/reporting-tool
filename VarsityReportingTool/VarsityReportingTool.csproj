@@ -45,8 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CustomReportManager.cs" />
-    <Compile Include="FileReader.cs" />
-    <Compile Include="FileWriter.cs" />
+    <Compile Include="File.cs" />
     <Compile Include="MainWindow.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -113,11 +113,11 @@ namespace VarsityReportingTool {
         // ====================
 
         private void saveReportToolStripMenuItem_Click(object sender, EventArgs e) {
-            customReports.InsertColumn("SCHDATE", "=", "");
+            File.SaveReport(reportTabControl.SelectedIndex, txtQuery, txtQueryPrompts, customReports);
         }
 
         private void loadReportToolStripMenuItem_Click(object sender, EventArgs e) {
-            int tab = FileReader.LoadReport(txtQuery, txtQueryPrompts, customReports);
+            int tab = File.LoadReport(txtQuery, txtQueryPrompts, customReports);
             if(tab > 0) {
                 reportTabControl.SelectTab(tab);
 
