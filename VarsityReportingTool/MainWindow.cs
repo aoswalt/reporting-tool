@@ -174,7 +174,7 @@ namespace VarsityReportingTool {
             string query =
                "SELECT det.dhous AS \"House\", det.scdat AS \"Schedule Date\", det.endat AS \"Order Date\", " +
                     "det.ordnr AS \"Order Number\", det.orvch AS \"Voucher\", " +
-                    "det.ditem AS \"Style Code\", det.dlsiz AS \"Size\", siz.letwid AS \"Spec\", nam.letname AS \"Name\", " +
+                    "TRIM(det.ditem) AS \"Style Code\", det.dlsiz AS \"Size\", siz.letwid AS \"Spec\", nam.letname AS \"Name\", " +
                     "TRIM(det.dlwr1) AS \"Word 1\", TRIM(det.dlwr2) AS \"Word 2\", TRIM(det.dlwr3) AS \"Word 3\", TRIM(det.dlwr4) AS \"Word 4\", " +
                     "TRIM(det.dclr1) AS \"Color 1\", TRIM(det.dclr2) AS \"Color 2\", TRIM(det.dclr3) AS \"Color 3\", TRIM(det.dclr4) AS \"Color 4\", " +
                     "det.rudat AS \"Rush Date\"" +
