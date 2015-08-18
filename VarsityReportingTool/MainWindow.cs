@@ -315,7 +315,8 @@ namespace VarsityReportingTool {
                     break;
                 case ReportType.Cut_Letters:
                     query += @"
-                        (d.dclas IN ('041', '049', '04C', '04D', '04Y', 'F09', 'PS3', 'L02', 'L05', 'L10', 'S03', 'SKL', 'VTT')) AND 
+                       ((d.dclas IN ('041', '049', '04C', '04D', '04Y', 'F09', 'PS3', 'L02', 'L05', 'L10', 'S03', 'SKL', 'VTT')) OR 
+                        (d.ditem LIKE 'SIGN%')) AND 
                         (d.ditem NOT LIKE 'OZ%') AND ";
                     break;
                 case ReportType.RH_TS:
