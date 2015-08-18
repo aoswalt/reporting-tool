@@ -682,17 +682,17 @@ namespace VarsityReportingTool {
                 panel.Focus();
             }
 
-            // NOTE(adam): allow only numbers, comma, or period in entry field
+            // NOTE(adam): allow only numbers, comma, or period in entry field. allow backspace.
             private void entryField_Decimal_KeyPress(object sender, KeyPressEventArgs e) {
-                if(!Char.IsDigit(e.KeyChar) && !Char.IsControl(e.KeyChar) && !(e.KeyChar == '.') && !(e.KeyChar == ',')) {
+                if(!Char.IsDigit(e.KeyChar) && !Char.IsControl(e.KeyChar) && !(e.KeyChar == '.') && !(e.KeyChar == ',') && !(e.KeyChar == '\b')) {
                     e.Handled = true;
                     System.Media.SystemSounds.Beep.Play();
                 }
             }
 
-            // NOTE(adam): allow only numbers or comma in entry field
+            // NOTE(adam): allow only numbers or comma in entry field. allow backspace.
             private void entryField_Integer_KeyPress(object sender, KeyPressEventArgs e) {
-                if(!Char.IsDigit(e.KeyChar) && !Char.IsControl(e.KeyChar) && !(e.KeyChar == ',')) {
+                if(!Char.IsDigit(e.KeyChar) && !Char.IsControl(e.KeyChar) && !(e.KeyChar == ',') && !(e.KeyChar == '\b')) {
                     e.Handled = true;
                     System.Media.SystemSounds.Beep.Play();
                 }
