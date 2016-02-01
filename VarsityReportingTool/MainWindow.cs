@@ -321,7 +321,7 @@ namespace VarsityReportingTool {
                     break;
                 case ReportType.RH_TS:
                     query += @"
-                        (d.dclas IN ('04U', '04V', '04W', 'L01', 'L03', 'L04', 'L09', 'F09', 'PS3', 'RSC', 'RSO')) AND 
+                        (d.dclas IN ('04U', '04V', '04W', 'L01', 'L03', 'L04', 'L09', 'F09', 'PS3', 'RSC', 'RSO', 'TSO')) AND 
                         ((d.ditem LIKE 'RH%') OR (d.ditem LIKE 'TS%') OR (d.ditem LIKE 'RST%') OR (d.ditem Like 'RVOMMPT%')) AND ";
                     break;
                 case ReportType.Sublm_Inline:
