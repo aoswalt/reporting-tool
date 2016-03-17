@@ -315,9 +315,8 @@ namespace VarsityReportingTool {
                     break;
                 case ReportType.Cut_Letters:
                     query += @"
-                       ((d.dclas IN ('041', '049', '04C', '04D', '04Y', 'F09', 'JVT', 'L02', 'L05', 'L10', 'PS3', 'S03', 'SKL', 'VTT')) OR 
-                        (d.ditem LIKE 'SIGN%')) AND 
-                        (d.ditem NOT LIKE 'OZ%') AND ";
+                       (d.dclas IN ('041', '049', '04C', '04D', '04Y', 'F09', 'JVT', 'L02', 'L05', 'L10', 'PS3', 'S03', 'SKL', 'VTT')) AND 
+                       (d.ditem NOT LIKE 'OZ%') AND ";
                     break;
                 case ReportType.RH_TS:
                     query += @"
@@ -354,7 +353,7 @@ namespace VarsityReportingTool {
                          (d.ditem NOT LIKE 'MNBO1%') AND (d.ditem NOT LIKE 'MNBO2%') AND (d.ditem NOT LIKE 'MNBLC1%') AND (d.ditem NOT LIKE 'MNBLC2%') AND 
                          (d.ditem NOT LIKE 'MNBSF%') AND (d.ditem NOT LIKE 'MNBWI%') AND (d.ditem NOT LIKE 'MNHB1%') AND (d.ditem NOT LIKE 'MNHB2%') AND 
                          (d.ditem NOT LIKE 'MNHBW%') AND (d.ditem NOT LIKE 'MNBP%') AND (d.ditem NOT LIKE 'MNSP1%') AND (d.ditem NOT LIKE 'MNSP2%') AND 
-                         (d.ditem NOT LIKE 'MNBWP%') AND (d.ditem NOT LIKE 'MNSWP%') AND (d.ditem NOT LIKE 'MNBRWP%') AND (d.ditem NOT LIKE 'MNNWP%')) AND";
+                         (d.ditem NOT LIKE 'MNBWP%') AND (d.ditem NOT LIKE 'MNSWP%') AND (d.ditem NOT LIKE 'MNBRWP%') AND (d.ditem NOT LIKE 'MNNWP%')) AND ";
                     break;
                 default:
                     break;
