@@ -337,7 +337,7 @@ namespace VarsityReportingTool {
 
                     query += @"
                         ((d.ditem LIKE '%MN%') OR (d.ditem LIKE 'PF%') OR (d.dlrea LIKE 'ASW') OR (d.ditem LIKE 'PK%')) AND 
-                        ((d.ditem NOT LIKE '%CBSLIMN%') AND (d.ditem NOT LIKE '%SLIMN%')) AND 
+                        ((d.ditem NOT LIKE '%CBSLIMN%') AND (d.ditem NOT LIKE '%SLIMN%') AND (d.ditem NOT LIKE '%PKEY%')) AND 
                         (d.dclas NOT IN ('010', '045', '04A', '04B', '04M', '04O', '065', '075', '083', '086', '087', '089', 
                                          '0DB', '0P1', '0P2', '112', 'CS2', 'S01', 'S02', 'SSO', 'STL')) AND 
                         ((d.ditem NOT LIKE 'MN2001%') AND (d.ditem NOT LIKE 'MN2002%') AND (d.ditem NOT LIKE 'MNB1%') AND (d.ditem NOT LIKE 'MNB2%') AND 
