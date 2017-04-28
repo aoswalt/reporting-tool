@@ -315,7 +315,7 @@ namespace VarsityReportingTool {
                     break;
                 case ReportType.Cut_Letters:
                     query += @"
-                       (d.dclas IN ('041', '049', '04C', '04D', '04Y', 'F09', 'JVT', 'L02', 'L05', 'L10', 'PS3', 'S03', 'SKL', 'VTT')) AND 
+                       (d.dclas IN ('041', '049', '04C', '04D', '04Y', 'F09', 'JVT', 'L02', 'L05', 'L10', 'L14', 'PS3', 'S03', 'SKL', 'VTT')) AND 
                        (d.ditem NOT LIKE 'OZ%') AND ";
                     break;
                 case ReportType.RH_TS:
@@ -336,7 +336,7 @@ namespace VarsityReportingTool {
                 case ReportType.Sew:
 
                     query += @"
-                        ((d.ditem LIKE '%MN%') OR (d.ditem LIKE 'PF%') OR (d.dlrea LIKE 'ASW') OR (d.ditem LIKE 'PK%')) AND 
+                        ((d.ditem LIKE '%MN%') OR (d.ditem LIKE 'PF%') OR (d.dlrea LIKE 'ASW') OR (d.ditem LIKE 'PK%') OR (d.ditem LIKE 'HP%')) AND 
                         ((d.ditem NOT LIKE '%CBSLIMN%') AND (d.ditem NOT LIKE '%SLIMN%') AND (d.ditem NOT LIKE '%PKEY%')) AND 
                         (d.dclas NOT IN ('010', '045', '04A', '04B', '04M', '04O', '065', '075', '083', '086', '087', '089', 
                                          '0DB', '0P1', '0P2', '112', 'CS2', 'S01', 'S02', 'SSO', 'STL')) AND 
